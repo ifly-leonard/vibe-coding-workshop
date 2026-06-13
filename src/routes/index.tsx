@@ -942,3 +942,76 @@ function Footer() {
     </footer>
   );
 }
+
+function Pricing() {
+  const includes = [
+    "4-hour intensive workshop with all 3 instructors",
+    "Lovable Pro Subscription — 1 Month",
+    "Prompt Library + Product Building Cheat Sheet",
+    "Physical Certificate (online verifiable)",
+    "Access to AI:BN builder community",
+    "Light snacks & refreshments",
+  ];
+  return (
+    <section className="section-pad relative overflow-hidden">
+      <div
+        data-parallax="0.3"
+        className="absolute top-10 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(200,139,239,0.18), transparent 60%)" }}
+      />
+      <div className="vc-container relative">
+        <div className="text-center max-w-2xl mx-auto mb-12" data-reveal>
+          <span className="badge-orange mb-4">One ticket. Everything in.</span>
+          <h2 className="mt-4 text-4xl md:text-6xl font-extrabold tracking-tight">
+            Worth it for <span className="gradient-text">one prompt</span>.
+          </h2>
+          <p className="mt-4 text-[color:var(--text-muted)] text-lg">
+            We kept it simple. One price, one room, everything included.
+          </p>
+        </div>
+
+        <div data-scale-in className="relative max-w-3xl mx-auto">
+          <div className="absolute -inset-8 rounded-[44px] gradient-bg opacity-30 blur-3xl" />
+          <div className="relative glass-card p-10 md:p-14 text-center">
+            <div className="text-xs font-bold tracking-[0.3em] uppercase text-[color:var(--text-soft)]">
+              General Admission
+            </div>
+            <div className="mt-6 flex items-end justify-center gap-2">
+              <IndianRupee className="h-12 w-12 md:h-16 md:w-16 mb-2 md:mb-3" strokeWidth={2.5} />
+              <span className="text-7xl md:text-9xl font-black tracking-tighter leading-none gradient-text">
+                2,999
+              </span>
+            </div>
+            <div className="mt-3 text-[color:var(--text-soft)] text-sm font-bold tracking-[0.2em] uppercase">
+              Per Seat · All inclusive · GST extra
+            </div>
+
+            <ul className="mt-10 grid sm:grid-cols-2 gap-3 text-left max-w-xl mx-auto" data-stagger>
+              {includes.map((i) => (
+                <li
+                  key={i}
+                  data-stagger-item
+                  className="flex items-start gap-2.5 text-[color:var(--text-muted)] text-sm"
+                >
+                  <div className="mt-0.5 h-5 w-5 rounded-md gradient-bg flex items-center justify-center flex-shrink-0">
+                    <Check className="h-3 w-3 text-[#050505]" strokeWidth={4} />
+                  </div>
+                  <span>{i}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-10 flex flex-col items-center gap-3">
+              <LumaButton>
+                Reserve Your Seat <ArrowRight className="h-4 w-4" />
+              </LumaButton>
+              <span className="text-xs text-[color:var(--text-soft)]">
+                Secure checkout via Luma · Limited seats
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
