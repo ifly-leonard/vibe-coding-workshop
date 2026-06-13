@@ -262,16 +262,37 @@ function VibeCodingPage() {
       <Nav />
       <Hero />
       <WhyVideo />
+      <ParallaxBand
+        src={parallaxWorkshop}
+        alt="Builders working together at a Chennai workshop"
+        caption="Four hours. Three instructors. One product playbook."
+      />
       <WhyMatters />
       <WhatYouLearn />
+      <ParallaxBand
+        src={parallaxHands}
+        alt="Hands on a laptop coding with AI"
+        height="h-[70vh]"
+        caption="Stop learning AI. Start shipping with it."
+      />
       <Speakers />
       <Testimonials />
       <Audience />
       <TakeHome />
+      <Pricing />
+      <ParallaxBand src={parallaxAbstract} alt="Abstract gradient" height="h-[50vh]" speed="0.5" />
       <EventDetails />
       <FinalCTA />
       <Footer />
     </div>
+  );
+}
+
+function ParallaxBand(props: React.ComponentProps<typeof ParallaxImage>) {
+  return (
+    <section className="relative overflow-hidden">
+      <ParallaxImage {...props} />
+    </section>
   );
 }
 
