@@ -288,10 +288,22 @@ function VibeCodingPage() {
   );
 }
 
-function ParallaxBand(props: React.ComponentProps<typeof ParallaxImage>) {
+function ParallaxBand({
+  src,
+  alt,
+  height,
+  speed,
+  caption,
+}: {
+  src: string;
+  alt: string;
+  height?: string;
+  speed?: string;
+  caption?: string;
+}) {
   return (
     <section className="relative overflow-hidden">
-      <ParallaxImage {...props} />
+      <ParallaxImage src={src} alt={alt} height={height} speed={speed} caption={caption} />
     </section>
   );
 }
@@ -304,9 +316,9 @@ function Nav() {
           <div className="h-8 w-8 rounded-lg gradient-bg" />
           <span className="font-bold tracking-tight">AI:BN</span>
         </div>
-        <a href={REGISTER_URL} target="_blank" rel="noreferrer" className="btn-secondary !py-2.5 !px-5 !text-sm">
+        <LumaButton className="btn-secondary !py-2.5 !px-5 !text-sm">
           Reserve Your Seat
-        </a>
+        </LumaButton>
       </div>
     </header>
   );
