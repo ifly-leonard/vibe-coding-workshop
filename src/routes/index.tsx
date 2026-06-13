@@ -218,24 +218,8 @@ function VibeCodingPage() {
         },
       });
 
-      // Pinned testimonial horizontal scroll
-      const track = document.querySelector<HTMLElement>("[data-testimonial-track]");
-      const wrap = document.querySelector<HTMLElement>("[data-testimonial-wrap]");
-      if (track && wrap) {
-        const distance = () => track.scrollWidth - window.innerWidth + 80;
-        gsap.to(track, {
-          x: () => -distance(),
-          ease: "none",
-          scrollTrigger: {
-            trigger: wrap,
-            start: "top top",
-            end: () => `+=${distance()}`,
-            scrub: 0.8,
-            pin: true,
-            invalidateOnRefresh: true,
-          },
-        });
-      }
+      // (Testimonials uses pure CSS infinite marquee — no GSAP pinning here)
+
 
       // Marquee
       gsap.to("[data-marquee-inner]", {
@@ -680,7 +664,7 @@ function Testimonials() {
       img: "https://i.pravatar.cc/400?img=12",
       linkedin: "https://linkedin.com",
       highlight: "I shipped a paying product in a weekend — something I'd been stuck on for a year.",
-      body: "I came in skeptical. I'd done a dozen AI courses. This was different — they made me throw away my idea on day one and rebuild it around an actual customer. I shipped a paying product in a weekend, something I'd been stuck on for a year.",
+      body: "I came in skeptical. I'd done a dozen AI courses. This was different — they made me throw away my idea on day one and rebuild it around an actual customer.",
     },
     {
       name: "Priya Raghavan",
@@ -688,7 +672,7 @@ function Testimonials() {
       img: "https://i.pravatar.cc/400?img=47",
       linkedin: "https://linkedin.com",
       highlight: "Hameed's framing on problem-first thinking rewired how I scope every project now.",
-      body: "Hameed's framing on problem-first thinking rewired how I scope every project now. Leo's build flow is genuinely the fastest I've seen, and Hari pulled my GTM out of vibes into something I could defend in a room.",
+      body: "Leo's build flow is the fastest I've seen, and Hari pulled my GTM out of vibes into something I could defend in a room.",
     },
     {
       name: "Karthik Subramanian",
@@ -696,7 +680,7 @@ function Testimonials() {
       img: "https://i.pravatar.cc/400?img=33",
       linkedin: "https://linkedin.com",
       highlight: "Four hours that paid me back ten-fold in the next two weeks.",
-      body: "Four hours that paid me back ten-fold in the next two weeks. The prompt library alone is worth the ticket. The community is the real bonus — I'm still shipping with people I met that day.",
+      body: "The prompt library alone is worth the ticket. The community is the real bonus — I'm still shipping with people I met that day.",
     },
     {
       name: "Sneha Iyer",
@@ -704,72 +688,154 @@ function Testimonials() {
       img: "https://i.pravatar.cc/400?img=45",
       linkedin: "https://linkedin.com",
       highlight: "Stopped 'learning' AI and started shipping with it the same evening.",
-      body: "I stopped 'learning' AI and started shipping with it the same evening. The structure of the workshop — Why, How, Who — is genuinely the right order, and nobody else teaches it this way.",
+      body: "The structure — Why, How, Who — is genuinely the right order, and nobody else teaches it this way.",
+    },
+    {
+      name: "Rahul Krishnan",
+      title: "Engineer, Razorpay",
+      img: "https://i.pravatar.cc/400?img=15",
+      linkedin: "https://linkedin.com",
+      highlight: "I stopped writing throwaway side projects. Now I ship things people pay for.",
+      body: "The combination of product thinking + AI build flow + GTM is what every dev course is missing.",
+    },
+    {
+      name: "Ananya Pillai",
+      title: "Solo Founder",
+      img: "https://i.pravatar.cc/400?img=49",
+      linkedin: "https://linkedin.com",
+      highlight: "Got my first 10 paying customers in 12 days using the GTM template from the session.",
+      body: "I came in with nothing. I left with a product, a price, and a plan. That's wild for 4 hours.",
+    },
+    {
+      name: "Vikram Shenoy",
+      title: "Product Lead",
+      img: "https://i.pravatar.cc/400?img=22",
+      linkedin: "https://linkedin.com",
+      highlight: "Best ROI I've ever had on a workshop ticket — by a wide margin.",
+      body: "I sent two of my PMs the next month. They both came back shipping faster than the engineers.",
+    },
+    {
+      name: "Meera Joseph",
+      title: "Founder, Cohort",
+      img: "https://i.pravatar.cc/400?img=44",
+      linkedin: "https://linkedin.com",
+      highlight: "Finally a workshop that respects your time and your money.",
+      body: "Zero fluff. Hands on the keyboard within 20 minutes. Three frameworks I still use every week.",
+    },
+    {
+      name: "Naveen Kumar",
+      title: "CTO, early-stage SaaS",
+      img: "https://i.pravatar.cc/400?img=53",
+      linkedin: "https://linkedin.com",
+      highlight: "I rewired our entire prototyping workflow the week after.",
+      body: "Our PRD-to-prototype loop went from 3 weeks to 3 days. Genuinely changed how our team operates.",
     },
   ];
 
+  // Split into 3 columns for the masonry feel
+  const cols: typeof testimonials[] = [[], [], []];
+  testimonials.forEach((t, i) => cols[i % 3].push(t));
+
   return (
-    <section className="relative bg-[color:var(--bg-section)]">
-      <div data-testimonial-wrap className="relative h-screen overflow-hidden">
+    <section className="relative bg-[color:var(--bg-section)] overflow-hidden">
+      <div className="vc-container relative z-10 pt-24 pb-10">
+        <span className="badge-orange mb-4">Real builders. Real outcomes.</span>
+        <h2 className="mt-4 text-4xl md:text-6xl font-extrabold tracking-tight max-w-3xl">
+          They came to build. <span className="gradient-text">They left shipping.</span>
+        </h2>
+        <p className="mt-4 text-[color:var(--text-muted)] text-lg max-w-2xl">
+          A wall of receipts from past attendees — scrolling forever, because the list keeps growing.
+        </p>
+      </div>
+
+      <div className="relative h-[720px] overflow-hidden">
         <div
           data-parallax="0.3"
-          className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full pointer-events-none"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full pointer-events-none"
           style={{ background: "radial-gradient(circle, rgba(200,139,239,0.10), transparent 70%)" }}
         />
+        {/* Top & bottom fade masks */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[color:var(--bg-section)] to-transparent z-20" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[color:var(--bg-section)] to-transparent z-20" />
 
-        <div className="absolute top-0 left-0 right-0 z-10 pt-24 pointer-events-none">
-          <div className="vc-container">
-            <span className="badge-orange mb-4">Real builders. Real outcomes.</span>
-            <h2 className="mt-4 text-4xl md:text-6xl font-extrabold tracking-tight max-w-3xl">
-              They came to build. <span className="gradient-text">They left shipping.</span>
-            </h2>
-          </div>
-        </div>
-
-        <div className="absolute inset-0 flex items-center">
-          <div data-testimonial-track className="flex gap-8 pl-8 pr-20 will-change-transform">
-            {testimonials.map((t) => (
-              <article
-                key={t.name}
-                className="testimonial-card glass-card p-10 md:p-12 flex flex-col gap-6 shrink-0 w-[88vw] md:w-[720px]"
+        <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-6 md:px-10 h-full">
+          {cols.map((col, idx) => (
+            <div
+              key={idx}
+              className={`relative overflow-hidden ${idx === 1 ? "hidden md:block" : ""} ${idx === 2 ? "hidden lg:block" : ""}`}
+            >
+              <div
+                className="flex flex-col gap-6 will-change-transform"
+                style={{
+                  animation: `marquee-y-${idx % 2 === 0 ? "up" : "down"} ${40 + idx * 8}s linear infinite`,
+                }}
               >
-                <Quote className="h-12 w-12 text-[#C88BEF] opacity-60" strokeWidth={1.5} />
-                <p className="text-2xl md:text-3xl font-extrabold leading-tight tracking-tight">
-                  "<span className="gradient-text">{t.highlight}</span>"
-                </p>
-                <p className="text-[color:var(--text-muted)] leading-relaxed">{t.body}</p>
-                <div className="mt-auto pt-6 border-t border-white/10 flex items-center gap-4">
-                  <img
-                    src={t.img}
-                    alt={t.name}
-                    className="h-16 w-16 rounded-full object-cover border-2 border-white/30"
-                  />
-                  <div className="flex-1">
-                    <div className="font-extrabold text-lg">{t.name}</div>
-                    <div className="text-sm text-[color:var(--text-soft)]">{t.title}</div>
-                  </div>
-                  <a
-                    href={t.linkedin}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="h-10 w-10 rounded-lg border border-white/15 flex items-center justify-center hover:bg-white/10 transition"
-                    aria-label={`${t.name} on LinkedIn`}
-                  >
-                    <Linkedin className="h-4 w-4" />
-                  </a>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-
-        <div className="absolute bottom-8 left-0 right-0 text-center text-xs font-bold tracking-[0.3em] uppercase text-[color:var(--text-soft)]">
-          ← Scroll to read more →
+                {[...col, ...col, ...col].map((t, i) => (
+                  <TestimonialCard key={`${idx}-${i}-${t.name}`} t={t} />
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* Inline keyframes — scoped here to keep the marquee co-located */}
+      <style>{`
+        @keyframes marquee-y-up {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-33.3333%); }
+        }
+        @keyframes marquee-y-down {
+          0% { transform: translateY(-33.3333%); }
+          100% { transform: translateY(0); }
+        }
+      `}</style>
     </section>
   );
 }
+
+type Testimonial = {
+  name: string;
+  title: string;
+  img: string;
+  linkedin: string;
+  highlight: string;
+  body: string;
+};
+
+function TestimonialCard({ t }: { t: Testimonial }) {
+  return (
+    <article className="glass-card p-7 flex flex-col gap-4 shrink-0">
+      <Quote className="h-8 w-8 text-[#C88BEF] opacity-60" strokeWidth={1.5} />
+      <p className="text-xl font-extrabold leading-snug tracking-tight">
+        "<span className="gradient-text">{t.highlight}</span>"
+      </p>
+      <p className="text-sm text-[color:var(--text-muted)] leading-relaxed">{t.body}</p>
+      <div className="mt-auto pt-4 border-t border-white/10 flex items-center gap-3">
+        <img
+          src={t.img}
+          alt={t.name}
+          loading="lazy"
+          className="h-12 w-12 rounded-full object-cover border-2 border-white/30"
+        />
+        <div className="flex-1 min-w-0">
+          <div className="font-extrabold text-sm truncate">{t.name}</div>
+          <div className="text-xs text-[color:var(--text-soft)] truncate">{t.title}</div>
+        </div>
+        <a
+          href={t.linkedin}
+          target="_blank"
+          rel="noreferrer"
+          className="h-8 w-8 rounded-lg border border-white/15 flex items-center justify-center hover:bg-white/10 transition flex-shrink-0"
+          aria-label={`${t.name} on LinkedIn`}
+        >
+          <Linkedin className="h-3.5 w-3.5" />
+        </a>
+      </div>
+    </article>
+  );
+}
+
 
 function Audience() {
   const yes = [
