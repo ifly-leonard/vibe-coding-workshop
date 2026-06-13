@@ -158,35 +158,38 @@ function VibeCodingPage() {
         );
       });
 
-      // Fade-up reveals
+      // Fade-up reveals (fail-safe: final state guaranteed via fromTo)
       gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
-        gsap.from(el, {
-          y: 60,
-          opacity: 0,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
+        gsap.fromTo(
+          el,
+          { y: 60, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: { trigger: el, start: "top 95%", toggleActions: "play none none none" },
           },
-        });
+        );
       });
 
       // Staggered children
       gsap.utils.toArray<HTMLElement>("[data-stagger]").forEach((container) => {
         const children = container.querySelectorAll<HTMLElement>("[data-stagger-item]");
-        gsap.from(children, {
-          y: 80,
-          opacity: 0,
-          duration: 0.9,
-          ease: "power3.out",
-          stagger: 0.12,
-          scrollTrigger: {
-            trigger: container,
-            start: "top 80%",
+        gsap.fromTo(
+          children,
+          { y: 80, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            ease: "power3.out",
+            stagger: 0.12,
+            scrollTrigger: { trigger: container, start: "top 95%", toggleActions: "play none none none" },
           },
-        });
+        );
       });
+
 
       // Hero title layered parallax
       const heroTitle = document.querySelector("[data-hero-title]");
