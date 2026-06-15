@@ -489,7 +489,7 @@ function WhyMatters() {
             Why this workshop
           </span>
           <h2 className="mt-4 text-4xl md:text-5xl font-extrabold tracking-tight">
-            Everyone is building apps. <span className="gradient-text">Very few are building products people actually want.</span>
+            <D text="Everyone is building apps. " /><span className="gradient-text"><D text="Very few are building products people actually want." /></span>
           </h2>
           <div className="mt-8 space-y-5 text-lg text-[color:var(--text-muted)] leading-relaxed">
             <p>Most people start with the tool. The best builders start with the problem.</p>
