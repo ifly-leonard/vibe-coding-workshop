@@ -1019,9 +1019,9 @@ function FinalCTA() {
       <div className="vc-container relative">
         <div className="max-w-3xl" data-reveal>
           <h2 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[0.95]">
-            <span className="block">Build the right thing.</span>
-            <span className="block gradient-text">Build it the right way.</span>
-            <span className="block">Take it to the right people.</span>
+            <span className="block"><D text="Build the right thing." /></span>
+            <span className="block gradient-text"><D text="Build it the right way." /></span>
+            <span className="block"><D text="Take it to the right people." /></span>
           </h2>
           <p className="mt-8 text-xl text-[color:var(--text-muted)] max-w-2xl">
             If you've ever wanted to build something meaningful with AI but weren't sure where to start — this is where you begin.
