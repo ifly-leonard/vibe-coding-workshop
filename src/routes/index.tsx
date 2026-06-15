@@ -763,7 +763,7 @@ function Testimonials() {
       <div className="vc-container relative z-10 pt-24 pb-10">
         <span className="badge-orange mb-4">Real builders. Real outcomes.</span>
         <h2 className="mt-4 text-4xl md:text-6xl font-extrabold tracking-tight max-w-3xl">
-          They came to build. <span className="gradient-text">They left shipping.</span>
+          <D text="They came to build. " /><span className="gradient-text"><D text="They left shipping." /></span>
         </h2>
         <p className="mt-4 text-[color:var(--text-muted)] text-lg max-w-2xl">
           A wall of receipts from past attendees — scrolling forever, because the list keeps growing.
