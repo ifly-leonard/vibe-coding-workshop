@@ -25,6 +25,9 @@ import {
 import parallaxWorkshop from "@/assets/parallax-workshop.jpg";
 import parallaxAbstract from "@/assets/parallax-abstract.jpg";
 import parallaxHands from "@/assets/parallax-hands.jpg";
+import hameedPhoto from "@/assets/hameed.jpeg.asset.json";
+import hariPhoto from "@/assets/hari.png.asset.json";
+import leoPhoto from "@/assets/leo.jpeg.asset.json";
 
 const LUMA_EVENT_ID = "evt-MrNHUahHMbUuA6I";
 
@@ -534,6 +537,7 @@ function Speakers() {
     {
       ring: "r1",
       initial: "H",
+      photo: hameedPhoto.url,
       name: "Hameed",
       role: "The Why",
       tagline: "Product Thinking Before Product Building",
@@ -544,11 +548,12 @@ function Speakers() {
         "How to validate customer pain points",
       ],
       podcast: "https://open.spotify.com/embed/episode/4rOoJ6Egrf8K2IrywzwOMk",
-      linkedin: "https://linkedin.com",
+      linkedin: "https://www.linkedin.com/in/hameedraha",
     },
     {
       ring: "r2",
       initial: "L",
+      photo: leoPhoto.url,
       name: "Leo",
       role: "The How",
       tagline: "Building the Minimum Lovable Product",
@@ -559,11 +564,12 @@ function Speakers() {
         "How to ship launch-ready products with process",
       ],
       podcast: "https://open.spotify.com/embed/episode/4rOoJ6Egrf8K2IrywzwOMk",
-      linkedin: "https://linkedin.com",
+      linkedin: "https://www.linkedin.com/in/leonardselvaraja/",
     },
     {
       ring: "r3",
       initial: "H",
+      photo: hariPhoto.url,
       name: "Hari",
       role: "The Who",
       tagline: "Taking Your Product to Customers",
@@ -574,7 +580,7 @@ function Speakers() {
         "How to get your first users or customers",
       ],
       podcast: "https://open.spotify.com/embed/episode/4rOoJ6Egrf8K2IrywzwOMk",
-      linkedin: "https://linkedin.com",
+      linkedin: "https://www.linkedin.com/in/imharikumaran/",
     },
   ];
 
@@ -603,7 +609,9 @@ function Speakers() {
               className="glass-card p-8 flex flex-col hover:-translate-y-2 transition-transform duration-500"
             >
               <div className="flex items-center gap-4">
-                <div className={`avatar-ring ${s.ring} !ml-0 !w-16 !h-16 text-xl`}>{s.initial}</div>
+                <div className={`avatar-ring ${s.ring} !ml-0 !w-16 !h-16 !p-0 overflow-hidden`}>
+                  <img src={s.photo} alt={s.name} className="w-full h-full object-cover rounded-full" />
+                </div>
                 <div className="flex-1">
                   <div className="text-xs font-bold tracking-[0.2em] uppercase text-[color:var(--text-soft)]">
                     {s.role}
