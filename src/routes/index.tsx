@@ -372,10 +372,10 @@ function Hero() {
               data-hero-title
               className="font-display uppercase tracking-tight font-extrabold leading-[0.88] text-[clamp(56px,9vw,120px)]"
             >
-              <span data-hero-line className="block gradient-text">AI Vibe</span>
-              <span data-hero-line className="block font-light text-[#EDEDF5]">Coding</span>
+              <span data-hero-line className="block gradient-text"><D text="AI Vibe" /></span>
+              <span data-hero-line className="block font-light text-[#EDEDF5]"><D text="Coding" /></span>
               <span data-hero-line className="block text-[0.42em] tracking-tight mt-4 text-white">
-                THE <span className="underline-word">RIGHT</span> WAY
+                <D text="THE " /><span className="underline-word"><D text="RIGHT" /></span><D text=" WAY" />
               </span>
             </h1>
 
