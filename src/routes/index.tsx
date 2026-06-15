@@ -524,7 +524,7 @@ function WhatYouLearn() {
       <div className="vc-container relative">
         <div className="text-center max-w-2xl mx-auto mb-14" data-reveal>
           <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight">
-            What you'll <span className="gradient-text">walk away with</span>
+            <D text="What you'll " /><span className="gradient-text"><D text="walk away with" /></span>
           </h2>
           <p className="mt-4 text-[color:var(--text-muted)] text-lg">
             Four hours. One end-to-end product playbook.
