@@ -609,7 +609,7 @@ function Speakers() {
         <div className="max-w-2xl mb-14" data-reveal>
           <span className="badge-orange mb-4">Meet the instructors</span>
           <h2 className="mt-4 text-4xl md:text-5xl font-extrabold tracking-tight">
-            Three builders. <span className="gradient-text">One complete playbook.</span>
+            <D text="Three builders. " /><span className="gradient-text"><D text="One complete playbook." /></span>
           </h2>
           <p className="mt-4 text-[color:var(--text-muted)] text-lg">
             Listen to each instructor's podcast to get a feel for how they think — then come build with them.
