@@ -537,6 +537,7 @@ function Speakers() {
     {
       ring: "r1",
       initial: "H",
+      photo: hameedPhoto.url,
       name: "Hameed",
       role: "The Why",
       tagline: "Product Thinking Before Product Building",
@@ -547,11 +548,12 @@ function Speakers() {
         "How to validate customer pain points",
       ],
       podcast: "https://open.spotify.com/embed/episode/4rOoJ6Egrf8K2IrywzwOMk",
-      linkedin: "https://linkedin.com",
+      linkedin: "https://www.linkedin.com/in/hameedraha",
     },
     {
       ring: "r2",
       initial: "L",
+      photo: leoPhoto.url,
       name: "Leo",
       role: "The How",
       tagline: "Building the Minimum Lovable Product",
@@ -562,11 +564,12 @@ function Speakers() {
         "How to ship launch-ready products with process",
       ],
       podcast: "https://open.spotify.com/embed/episode/4rOoJ6Egrf8K2IrywzwOMk",
-      linkedin: "https://linkedin.com",
+      linkedin: "https://www.linkedin.com/in/leonardselvaraja/",
     },
     {
       ring: "r3",
       initial: "H",
+      photo: hariPhoto.url,
       name: "Hari",
       role: "The Who",
       tagline: "Taking Your Product to Customers",
@@ -577,7 +580,7 @@ function Speakers() {
         "How to get your first users or customers",
       ],
       podcast: "https://open.spotify.com/embed/episode/4rOoJ6Egrf8K2IrywzwOMk",
-      linkedin: "https://linkedin.com",
+      linkedin: "https://www.linkedin.com/in/imharikumaran/",
     },
   ];
 
