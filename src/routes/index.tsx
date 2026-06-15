@@ -1055,7 +1055,7 @@ function Pricing() {
     "Light snacks & refreshments",
   ];
   return (
-    <section className="section-pad relative overflow-hidden">
+    <section className="section-pad relative">
       <div
         data-parallax="0.3"
         className="absolute top-10 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full pointer-events-none"
