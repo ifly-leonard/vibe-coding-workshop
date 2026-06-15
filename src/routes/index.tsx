@@ -1074,7 +1074,7 @@ function Pricing() {
         <div className="text-center max-w-2xl mx-auto mb-12" data-reveal>
           <span className="badge-orange mb-4">One ticket. Everything in.</span>
           <h2 className="mt-4 text-4xl md:text-6xl font-extrabold tracking-tight">
-            Worth it for <span className="gradient-text">one prompt</span>.
+            <D text="Worth it for " /><span className="gradient-text"><D text="one prompt" /></span><D text="." />
           </h2>
           <p className="mt-4 text-[color:var(--text-muted)] text-lg">
             We kept it simple. One price, one room, everything included.
