@@ -938,7 +938,7 @@ function TakeHome() {
               What you'll take home
             </span>
             <h3 className="mt-3 text-3xl font-extrabold">
-              Tools you'll <span className="gradient-text">actually use</span>.
+              <D text="Tools you'll " /><span className="gradient-text"><D text="actually use" /></span><D text="." />
             </h3>
             <ul className="mt-6 space-y-3.5" data-stagger>
               {items.map((i) => (
