@@ -643,7 +643,7 @@ function Speakers() {
                 </a>
               </div>
 
-              <h3 className="mt-6 text-lg font-bold gradient-text">{s.tagline}</h3>
+              <h3 className="mt-6 text-lg font-bold gradient-text"><D text={s.tagline} /></h3>
               <p className="mt-2 text-sm text-[color:var(--text-soft)] leading-relaxed">{s.bio}</p>
 
               <ul className="mt-5 space-y-2.5">
