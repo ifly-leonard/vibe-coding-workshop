@@ -1113,6 +1113,7 @@ function Pricing() {
               </span>
             </div>
           </div>
+          </ElectricBorder>
         </div>
       </div>
     </section>
