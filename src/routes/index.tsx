@@ -455,7 +455,7 @@ function WhyVideo() {
         <div className="text-center max-w-2xl mx-auto mb-12" data-reveal>
           <span className="badge-orange mb-4">Watch first · 2 min</span>
           <h2 className="mt-5 text-4xl md:text-6xl font-extrabold tracking-tight">
-            Why <span className="gradient-text">this workshop</span> exists.
+            <D text="Why " /><span className="gradient-text"><D text="this workshop" /></span><D text=" exists." />
           </h2>
           <p className="mt-4 text-[color:var(--text-muted)] text-lg">
             The honest reason we're running this — straight from the instructors.
