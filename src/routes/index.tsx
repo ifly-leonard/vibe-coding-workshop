@@ -964,7 +964,7 @@ function EventDetails() {
         <div className="text-center max-w-2xl mx-auto mb-14" data-reveal>
           <span className="badge-orange mb-4">Event Details</span>
           <h2 className="mt-4 text-4xl md:text-5xl font-extrabold tracking-tight">
-            The <span className="gradient-text">essentials</span>
+            <D text="The " /><span className="gradient-text"><D text="essentials" /></span>
           </h2>
         </div>
 
