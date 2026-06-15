@@ -28,6 +28,8 @@ import parallaxHands from "@/assets/parallax-hands.jpg";
 import hameedPhoto from "@/assets/hameed.jpeg.asset.json";
 import hariPhoto from "@/assets/hari.png.asset.json";
 import leoPhoto from "@/assets/leo.jpeg.asset.json";
+import ElectricBorder from "@/components/ElectricBorder";
+
 // Decode-reveal removed — render plain text
 const D = ({ text }: { text: string; className?: string }) => <>{text}</>;
 
@@ -1072,7 +1074,8 @@ function Pricing() {
 
         <div data-scale-in className="relative max-w-3xl mx-auto">
           <div className="absolute -inset-8 rounded-[44px] gradient-bg opacity-30 blur-3xl" />
-          <div className="relative glass-card p-10 md:p-14 text-center">
+          <ElectricBorder color="#C88BEF" speed={0.9} chaos={0.5} borderRadius={28} className="relative">
+            <div className="relative glass-card p-10 md:p-14 text-center" style={{ borderRadius: 28 }}>
             <div className="text-xs font-bold tracking-[0.3em] uppercase text-[color:var(--text-soft)]">
               General Admission
             </div>
@@ -1110,6 +1113,7 @@ function Pricing() {
               </span>
             </div>
           </div>
+          </ElectricBorder>
         </div>
       </div>
     </section>
