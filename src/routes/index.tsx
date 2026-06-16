@@ -1,11 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   MapPin,
   Clock,
-  Laptop,
   Coffee,
   Check,
   X,
@@ -14,83 +13,20 @@ import {
   Wrench,
   Rocket,
   Calendar,
-  Users,
   ArrowRight,
-  Play,
   Linkedin,
   Mic,
-  Quote,
   IndianRupee,
 } from "lucide-react";
-import parallaxWorkshop from "@/assets/parallax-workshop.jpg";
-import parallaxAbstract from "@/assets/parallax-abstract.jpg";
-import parallaxHands from "@/assets/parallax-hands.jpg";
-import hameedPhoto from "@/assets/hameed.jpeg.asset.json";
-import hariPhoto from "@/assets/hari.png.asset.json";
-import leoPhoto from "@/assets/leo.jpeg.asset.json";
-import ElectricBorder from "@/components/ElectricBorder";
+import hameedPhoto from "@/assets/hameed.jpeg";
+import hariPhoto from "@/assets/hari.png";
+import leoPhoto from "@/assets/leo.jpeg";
+import CardSwap, { Card, type CardSwapHandle } from "@/components/CardSwap";
+import { ReservationProvider, ReserveSeatButton } from "@/components/ReservationWizard";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Decode-reveal removed — render plain text
 const D = ({ text }: { text: string; className?: string }) => <>{text}</>;
-
-
-const LUMA_EVENT_ID = "evt-MrNHUahHMbUuA6I";
-
-type LumaButtonProps = {
-  className?: string;
-  children: ReactNode;
-};
-
-function LumaButton({ className = "btn-primary", children }: LumaButtonProps) {
-  return (
-    <a
-      href={REGISTER_URL}
-      className={`luma-checkout--button ${className}`}
-      data-luma-action="checkout"
-      data-luma-event-id={LUMA_EVENT_ID}
-    >
-      {children}
-    </a>
-  );
-}
-
-function ParallaxImage({
-  src,
-  alt,
-  height = "h-[60vh]",
-  speed = "0.4",
-  caption,
-}: {
-  src: string;
-  alt: string;
-  height?: string;
-  speed?: string;
-  caption?: string;
-}) {
-  return (
-    <div className={`relative w-full ${height} overflow-hidden`}>
-      <div
-        data-parallax-img={speed}
-        className="absolute inset-0 -top-[20%] -bottom-[20%]"
-      >
-        <img
-          src={src}
-          alt={alt}
-          loading="lazy"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background" />
-      </div>
-      {caption && (
-        <div className="absolute bottom-10 left-0 right-0 vc-container">
-          <p className="text-2xl md:text-4xl font-extrabold tracking-tight max-w-2xl gradient-text">
-            {caption}
-          </p>
-        </div>
-      )}
-    </div>
-  );
-}
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -113,21 +49,8 @@ export const Route = createFileRoute("/")({
   component: VibeCodingPage,
 });
 
-const REGISTER_URL = "https://luma.com/event/evt-MrNHUahHMbUuA6I";
-
 function VibeCodingPage() {
   const rootRef = useRef<HTMLDivElement>(null);
-
-  // Inject Luma checkout script once
-  useEffect(() => {
-    if (typeof document === "undefined") return;
-    if (document.getElementById("luma-checkout")) return;
-    const s = document.createElement("script");
-    s.id = "luma-checkout";
-    s.src = "https://embed.lu.ma/checkout-button.js";
-    s.async = true;
-    document.body.appendChild(s);
-  }, []);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -145,25 +68,6 @@ function VibeCodingPage() {
             scrub: true,
           },
         });
-      });
-
-      // Parallax images (move slower than scroll for depth)
-      gsap.utils.toArray<HTMLElement>("[data-parallax-img]").forEach((el) => {
-        const speed = parseFloat(el.dataset.parallaxImg || "0.4");
-        gsap.fromTo(
-          el,
-          { yPercent: -speed * 30 },
-          {
-            yPercent: speed * 30,
-            ease: "none",
-            scrollTrigger: {
-              trigger: el.parentElement,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: true,
-            },
-          },
-        );
       });
 
       // Fade-up reveals (fail-safe: final state guaranteed via fromTo)
@@ -226,9 +130,6 @@ function VibeCodingPage() {
         },
       });
 
-      // (Testimonials uses pure CSS infinite marquee — no GSAP pinning here)
-
-
       // Marquee
       gsap.to("[data-marquee-inner]", {
         xPercent: -50,
@@ -253,8 +154,7 @@ function VibeCodingPage() {
       });
     }, rootRef);
 
-    // Recalculate triggers after images/fonts settle (pinned testimonial section
-    // changes total scroll height, which throws off earlier reveals).
+    // Recalculate triggers after images/fonts settle.
     const refresh = () => ScrollTrigger.refresh();
     const t1 = window.setTimeout(refresh, 300);
     const t2 = window.setTimeout(refresh, 1200);
@@ -273,53 +173,19 @@ function VibeCodingPage() {
 
 
   return (
-    <div ref={rootRef} className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      <Nav />
-      <Hero />
-      <WhyVideo />
-      <ParallaxBand
-        src={parallaxWorkshop}
-        alt="Builders working together at a Chennai workshop"
-        caption="Four hours. Three instructors. One product playbook."
-      />
-      <WhyMatters />
-      <WhatYouLearn />
-      <ParallaxBand
-        src={parallaxHands}
-        alt="Hands on a laptop coding with AI"
-        height="h-[70vh]"
-        caption="Stop learning AI. Start shipping with it."
-      />
-      <Speakers />
-      <Testimonials />
-      <Audience />
-      <TakeHome />
-      <Pricing />
-      <ParallaxBand src={parallaxAbstract} alt="Abstract gradient" height="h-[50vh]" speed="0.5" />
-      <EventDetails />
-      <FinalCTA />
-      <Footer />
-    </div>
-  );
-}
-
-function ParallaxBand({
-  src,
-  alt,
-  height,
-  speed,
-  caption,
-}: {
-  src: string;
-  alt: string;
-  height?: string;
-  speed?: string;
-  caption?: string;
-}) {
-  return (
-    <section className="relative overflow-hidden">
-      <ParallaxImage src={src} alt={alt} height={height} speed={speed} caption={caption} />
-    </section>
+    <ReservationProvider>
+      <div ref={rootRef} className="min-h-screen bg-background text-foreground overflow-x-hidden">
+        <Nav />
+        <Hero />
+        <WhyMatters />
+        <WhatYouLearn />
+        <SpeakersCardSwap />
+        <Audience />
+        <Pricing />
+        <EventDetails />
+        <Footer />
+      </div>
+    </ReservationProvider>
   );
 }
 
@@ -331,9 +197,9 @@ function Nav() {
           <div className="h-8 w-8 rounded-lg gradient-bg" />
           <span className="font-bold tracking-tight">AI:BN</span>
         </div>
-        <LumaButton className="btn-secondary !py-2.5 !px-5 !text-sm">
+        <ReserveSeatButton className="btn-secondary !py-2.5 !px-5 !text-sm">
           Reserve Your Seat
-        </LumaButton>
+        </ReserveSeatButton>
       </div>
     </header>
   );
@@ -343,7 +209,6 @@ function Hero() {
   return (
     <section className="hero-bg relative overflow-hidden pt-28 pb-24 md:pt-40 md:pb-32">
       <div className="absolute inset-0 grid-bg opacity-40 pointer-events-none" />
-      {/* Parallax blobs */}
       <div
         data-parallax="0.4"
         className="absolute -top-20 -left-20 w-[420px] h-[420px] rounded-full pointer-events-none"
@@ -382,9 +247,15 @@ function Hero() {
 
             <div className="mt-8 flex items-center gap-5" data-reveal>
               <div className="flex">
-                <div className="avatar-ring r1">H</div>
-                <div className="avatar-ring r2">L</div>
-                <div className="avatar-ring r3">H</div>
+                <div className="avatar-ring r1 overflow-hidden !p-0">
+                  <img src={hameedPhoto} alt="Hameed" className="w-full h-full object-cover" />
+                </div>
+                <div className="avatar-ring r2 overflow-hidden !p-0">
+                  <img src={leoPhoto} alt="Leo" className="w-full h-full object-cover" />
+                </div>
+                <div className="avatar-ring r3 overflow-hidden !p-0">
+                  <img src={hariPhoto} alt="Hari" className="w-full h-full object-cover" />
+                </div>
               </div>
               <div className="flex items-center gap-2 text-[color:var(--text-soft)]">
                 <MapPin className="h-5 w-5" />
@@ -393,12 +264,9 @@ function Hero() {
             </div>
 
             <div className="mt-10 flex flex-wrap gap-4" data-reveal>
-              <LumaButton>
+              <ReserveSeatButton>
                 Reserve Your Seat <ArrowRight className="h-4 w-4" />
-              </LumaButton>
-              <a href="#why-video" className="btn-secondary">
-                <Play className="h-4 w-4" /> Watch Why
-              </a>
+              </ReserveSeatButton>
             </div>
           </div>
 
@@ -415,7 +283,7 @@ function Hero() {
       </div>
 
       {/* Marquee */}
-      <div className="mt-20 overflow-hidden border-y border-white/10 py-5 bg-black/40">
+      <div className="relative mt-20 overflow-hidden border-y border-white/10 py-5 bg-black/40">
         <div data-marquee-inner className="flex gap-12 whitespace-nowrap text-2xl md:text-3xl font-extrabold uppercase tracking-tight">
           {Array.from({ length: 2 }).map((_, k) => (
             <div key={k} className="flex gap-12 shrink-0">
@@ -434,43 +302,6 @@ function Hero() {
   );
 }
 
-function WhyVideo() {
-  return (
-    <section id="why-video" className="section-pad relative overflow-hidden">
-      <div
-        data-parallax="0.3"
-        className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[700px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(142,167,255,0.18), transparent 70%)" }}
-      />
-      <div className="vc-container relative">
-        <div className="text-center max-w-2xl mx-auto mb-12" data-reveal>
-          <span className="badge-orange mb-4">Watch first · 2 min</span>
-          <h2 className="mt-5 text-4xl md:text-6xl font-extrabold tracking-tight">
-            <D text="Why " /><span className="gradient-text"><D text="this workshop" /></span><D text=" exists." />
-          </h2>
-          <p className="mt-4 text-[color:var(--text-muted)] text-lg">
-            The honest reason we're running this — straight from the instructors.
-          </p>
-        </div>
-
-        <div data-scale-in className="relative max-w-5xl mx-auto">
-          <div className="absolute -inset-6 rounded-[40px] gradient-bg opacity-30 blur-3xl" />
-          <div className="relative aspect-video rounded-[28px] overflow-hidden border border-white/15 bg-black shadow-[0_40px_120px_rgba(200,139,239,0.25)]">
-            {/* Replace src with your hosted video / YouTube embed */}
-            <iframe
-              className="w-full h-full"
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-              title="Why Vibe Coding: The Right Way"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function WhyMatters() {
   return (
     <section className="section-pad relative">
@@ -483,13 +314,12 @@ function WhyMatters() {
             <D text="Everyone is building apps. " /><span className="gradient-text"><D text="Very few are building products people actually want." /></span>
           </h2>
           <div className="mt-8 space-y-5 text-lg text-[color:var(--text-muted)] leading-relaxed">
-            <p>Most people start with the tool. The best builders start with the problem.</p>
             <p>
-              <strong className="text-white">Vibe Coding: The Right Way</strong> is a hands-on, 4-hour workshop designed to teach you how to go from{" "}
+              <strong className="text-white">Vibe Coding: The Right Way</strong> is a hands-on, 4-hour workshop that teaches you how to go from{" "}
               <span className="gradient-text font-bold">idea → product → customer</span> using modern AI tools and proven startup thinking.
             </p>
             <p>
-              This isn't another session where someone builds a to-do app in 15 minutes and calls it innovation. You'll learn how to identify real problems, validate opportunities, rapidly build solutions using AI, and take those solutions to market.
+              You won't watch someone build a to-do app in 15 minutes. You'll learn how to find real problems, validate them, ship with AI, and take your product to market.
             </p>
           </div>
         </div>
@@ -537,318 +367,295 @@ function WhatYouLearn() {
   );
 }
 
-function Speakers() {
-  const speakers = [
-    {
-      ring: "r1",
-      initial: "H",
-      photo: hameedPhoto.url,
-      name: "Hameed",
-      role: "The Why",
-      tagline: "Product Thinking Before Product Building",
-      bio: "20+ years as a product builder with Silicon Valley experience. Gartner recognized.",
-      points: [
-        "How to identify real problems worth solving",
-        "How to avoid building products nobody wants",
-        "How to validate customer pain points",
-      ],
-      podcast: "https://open.spotify.com/embed/episode/4rOoJ6Egrf8K2IrywzwOMk",
-      linkedin: "https://www.linkedin.com/in/hameedraha",
-    },
-    {
-      ring: "r2",
-      initial: "L",
-      photo: leoPhoto.url,
-      name: "Leo",
-      role: "The How",
-      tagline: "Building the Minimum Lovable Product",
-      bio: "10+ years building world-class, process-driven products. 3x award winner for Innovation in Technology.",
-      points: [
-        "How to use AI tools to rapidly build products",
-        "How to structure a vibe coding workflow",
-        "How to ship launch-ready products with process",
-      ],
-      podcast: "https://open.spotify.com/embed/episode/4rOoJ6Egrf8K2IrywzwOMk",
-      linkedin: "https://www.linkedin.com/in/leonardselvaraja/",
-    },
-    {
-      ring: "r3",
-      initial: "H",
-      photo: hariPhoto.url,
-      name: "Hari",
-      role: "The Who",
-      tagline: "Taking Your Product to Customers",
-      bio: "12+ years of digital product marketing expertise.",
-      points: [
-        "How to identify the right customer segment",
-        "How to position your product clearly",
-        "How to get your first users or customers",
-      ],
-      podcast: "https://open.spotify.com/embed/episode/4rOoJ6Egrf8K2IrywzwOMk",
-      linkedin: "https://www.linkedin.com/in/imharikumaran/",
-    },
-  ];
-
-  return (
-    <section className="section-pad relative overflow-hidden">
-      <div
-        data-parallax="0.35"
-        className="absolute top-10 -left-32 w-[500px] h-[500px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(189,238,255,0.14), transparent 70%)" }}
-      />
-      <div className="vc-container relative">
-        <div className="max-w-2xl mb-14" data-reveal>
-          <span className="badge-orange mb-4">Meet the instructors</span>
-          <h2 className="mt-4 text-4xl md:text-5xl font-extrabold tracking-tight">
-            <D text="Three builders. " /><span className="gradient-text"><D text="One complete playbook." /></span>
-          </h2>
-          <p className="mt-4 text-[color:var(--text-muted)] text-lg">
-            Listen to each instructor's podcast to get a feel for how they think — then come build with them.
-          </p>
-        </div>
-        <div className="grid lg:grid-cols-3 gap-6" data-stagger>
-          {speakers.map((s) => (
-            <article
-              key={s.name}
-              data-stagger-item
-              className="glass-card p-8 flex flex-col hover:-translate-y-2 transition-transform duration-500"
-            >
-              <div className="flex items-center gap-4">
-                <div className={`avatar-ring ${s.ring} !ml-0 !w-16 !h-16 !p-0 overflow-hidden`}>
-                  <img src={s.photo} alt={s.name} className="w-full h-full object-cover rounded-full" />
-                </div>
-                <div className="flex-1">
-                  <div className="text-xs font-bold tracking-[0.2em] uppercase text-[color:var(--text-soft)]">
-                    {s.role}
-                  </div>
-                  <div className="text-2xl font-extrabold">{s.name}</div>
-                </div>
-                <a
-                  href={s.linkedin}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="h-9 w-9 rounded-lg border border-white/15 flex items-center justify-center hover:bg-white/10 transition"
-                  aria-label={`${s.name} on LinkedIn`}
-                >
-                  <Linkedin className="h-4 w-4" />
-                </a>
-              </div>
-
-              <h3 className="mt-6 text-lg font-bold gradient-text"><D text={s.tagline} /></h3>
-              <p className="mt-2 text-sm text-[color:var(--text-soft)] leading-relaxed">{s.bio}</p>
-
-              <ul className="mt-5 space-y-2.5">
-                {s.points.map((p) => (
-                  <li key={p} className="flex gap-3 text-sm text-[color:var(--text-muted)]">
-                    <Check className="h-4 w-4 mt-0.5 flex-shrink-0 text-[#BDEEFF]" strokeWidth={2.5} />
-                    <span>{p}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-6 pt-5 border-t border-white/10">
-                <div className="flex items-center gap-2 text-xs font-bold tracking-[0.2em] uppercase text-[color:var(--text-soft)] mb-3">
-                  <Mic className="h-3.5 w-3.5" /> Listen to {s.name}
-                </div>
-                <div className="rounded-xl overflow-hidden border border-white/10">
-                  <iframe
-                    src={s.podcast}
-                    width="100%"
-                    height="152"
-                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                    loading="lazy"
-                    title={`${s.name} podcast`}
-                  />
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Testimonials() {
-  const testimonials = [
-    {
-      name: "Arjun Mehta",
-      title: "Founder, Stackline",
-      img: "https://i.pravatar.cc/400?img=12",
-      linkedin: "https://linkedin.com",
-      highlight: "I shipped a paying product in a weekend — something I'd been stuck on for a year.",
-      body: "I came in skeptical. I'd done a dozen AI courses. This was different — they made me throw away my idea on day one and rebuild it around an actual customer.",
-    },
-    {
-      name: "Priya Raghavan",
-      title: "PM, FinEdge",
-      img: "https://i.pravatar.cc/400?img=47",
-      linkedin: "https://linkedin.com",
-      highlight: "Hameed's framing on problem-first thinking rewired how I scope every project now.",
-      body: "Leo's build flow is the fastest I've seen, and Hari pulled my GTM out of vibes into something I could defend in a room.",
-    },
-    {
-      name: "Karthik Subramanian",
-      title: "Indie Hacker",
-      img: "https://i.pravatar.cc/400?img=33",
-      linkedin: "https://linkedin.com",
-      highlight: "Four hours that paid me back ten-fold in the next two weeks.",
-      body: "The prompt library alone is worth the ticket. The community is the real bonus — I'm still shipping with people I met that day.",
-    },
-    {
-      name: "Sneha Iyer",
-      title: "Designer turned Founder",
-      img: "https://i.pravatar.cc/400?img=45",
-      linkedin: "https://linkedin.com",
-      highlight: "Stopped 'learning' AI and started shipping with it the same evening.",
-      body: "The structure — Why, How, Who — is genuinely the right order, and nobody else teaches it this way.",
-    },
-    {
-      name: "Rahul Krishnan",
-      title: "Engineer, Razorpay",
-      img: "https://i.pravatar.cc/400?img=15",
-      linkedin: "https://linkedin.com",
-      highlight: "I stopped writing throwaway side projects. Now I ship things people pay for.",
-      body: "The combination of product thinking + AI build flow + GTM is what every dev course is missing.",
-    },
-    {
-      name: "Ananya Pillai",
-      title: "Solo Founder",
-      img: "https://i.pravatar.cc/400?img=49",
-      linkedin: "https://linkedin.com",
-      highlight: "Got my first 10 paying customers in 12 days using the GTM template from the session.",
-      body: "I came in with nothing. I left with a product, a price, and a plan. That's wild for 4 hours.",
-    },
-    {
-      name: "Vikram Shenoy",
-      title: "Product Lead",
-      img: "https://i.pravatar.cc/400?img=22",
-      linkedin: "https://linkedin.com",
-      highlight: "Best ROI I've ever had on a workshop ticket — by a wide margin.",
-      body: "I sent two of my PMs the next month. They both came back shipping faster than the engineers.",
-    },
-    {
-      name: "Meera Joseph",
-      title: "Founder, Cohort",
-      img: "https://i.pravatar.cc/400?img=44",
-      linkedin: "https://linkedin.com",
-      highlight: "Finally a workshop that respects your time and your money.",
-      body: "Zero fluff. Hands on the keyboard within 20 minutes. Three frameworks I still use every week.",
-    },
-    {
-      name: "Naveen Kumar",
-      title: "CTO, early-stage SaaS",
-      img: "https://i.pravatar.cc/400?img=53",
-      linkedin: "https://linkedin.com",
-      highlight: "I rewired our entire prototyping workflow the week after.",
-      body: "Our PRD-to-prototype loop went from 3 weeks to 3 days. Genuinely changed how our team operates.",
-    },
-  ];
-
-  // Split into 3 columns for the masonry feel
-  const cols: typeof testimonials[] = [[], [], []];
-  testimonials.forEach((t, i) => cols[i % 3].push(t));
-
-  return (
-    <section className="relative bg-[color:var(--bg-section)] overflow-hidden">
-      <div className="vc-container relative z-10 pt-24 pb-10">
-        <span className="badge-orange mb-4">Real builders. Real outcomes.</span>
-        <h2 className="mt-4 text-4xl md:text-6xl font-extrabold tracking-tight max-w-3xl">
-          <D text="They came to build. " /><span className="gradient-text"><D text="They left shipping." /></span>
-        </h2>
-        <p className="mt-4 text-[color:var(--text-muted)] text-lg max-w-2xl">
-          A wall of receipts from past attendees — scrolling forever, because the list keeps growing.
-        </p>
-      </div>
-
-      <div className="relative h-[720px] overflow-hidden">
-        <div
-          data-parallax="0.3"
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(200,139,239,0.10), transparent 70%)" }}
-        />
-        {/* Top & bottom fade masks */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[color:var(--bg-section)] to-transparent z-20" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[color:var(--bg-section)] to-transparent z-20" />
-
-        <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-6 md:px-10 h-full">
-          {cols.map((col, idx) => (
-            <div
-              key={idx}
-              className={`relative overflow-hidden ${idx === 1 ? "hidden md:block" : ""} ${idx === 2 ? "hidden lg:block" : ""}`}
-            >
-              <div
-                className="flex flex-col gap-6 will-change-transform"
-                style={{
-                  animation: `marquee-y-${idx % 2 === 0 ? "up" : "down"} ${40 + idx * 8}s linear infinite`,
-                }}
-              >
-                {[...col, ...col, ...col].map((t, i) => (
-                  <TestimonialCard key={`${idx}-${i}-${t.name}`} t={t} />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Inline keyframes — scoped here to keep the marquee co-located */}
-      <style>{`
-        @keyframes marquee-y-up {
-          0% { transform: translateY(0); }
-          100% { transform: translateY(-33.3333%); }
-        }
-        @keyframes marquee-y-down {
-          0% { transform: translateY(-33.3333%); }
-          100% { transform: translateY(0); }
-        }
-      `}</style>
-    </section>
-  );
-}
-
-type Testimonial = {
+type Speaker = {
+  ring: "r1" | "r2" | "r3";
+  photo: string;
   name: string;
-  title: string;
-  img: string;
+  role: string;
+  tagline: string;
+  bio: string;
+  points: string[];
+  podcast: string;
   linkedin: string;
-  highlight: string;
-  body: string;
 };
 
-function TestimonialCard({ t }: { t: Testimonial }) {
+const SPEAKERS: Speaker[] = [
+  {
+    ring: "r1",
+    photo: hameedPhoto,
+    name: "Hameed",
+    role: "The Why",
+    tagline: "Product Thinking Before Product Building",
+    bio: "20+ years as a product builder with Silicon Valley experience. Gartner recognized.",
+    points: [
+      "How to identify real problems worth solving",
+      "How to avoid building products nobody wants",
+      "How to validate customer pain points",
+    ],
+    podcast: "https://open.spotify.com/embed/episode/4rOoJ6Egrf8K2IrywzwOMk",
+    linkedin: "https://www.linkedin.com/in/hameedraha",
+  },
+  {
+    ring: "r2",
+    photo: leoPhoto,
+    name: "Leo",
+    role: "The How",
+    tagline: "Building the Minimum Lovable Product",
+    bio: "10+ years building world-class, process-driven products. 3x award winner for Innovation in Technology.",
+    points: [
+      "How to use AI tools to rapidly build products",
+      "How to structure a vibe coding workflow",
+      "How to ship launch-ready products with process",
+    ],
+    podcast: "https://open.spotify.com/embed/episode/4rOoJ6Egrf8K2IrywzwOMk",
+    linkedin: "https://www.linkedin.com/in/leonardselvaraja/",
+  },
+  {
+    ring: "r3",
+    photo: hariPhoto,
+    name: "Hari",
+    role: "The Who",
+    tagline: "Taking Your Product to Customers",
+    bio: "12+ years of digital product marketing expertise.",
+    points: [
+      "How to identify the right customer segment",
+      "How to position your product clearly",
+      "How to get your first users or customers",
+    ],
+    podcast: "https://open.spotify.com/embed/episode/4rOoJ6Egrf8K2IrywzwOMk",
+    linkedin: "https://www.linkedin.com/in/imharikumaran/",
+  },
+];
+
+function SpeakerSwapCardContent({ s, compact = true }: { s: Speaker; compact?: boolean }) {
   return (
-    <article className="glass-card p-7 flex flex-col gap-4 shrink-0">
-      <Quote className="h-8 w-8 text-[#C88BEF] opacity-60" strokeWidth={1.5} />
-      <p className="text-xl font-extrabold leading-snug tracking-tight">
-        "<span className="gradient-text">{t.highlight}</span>"
-      </p>
-      <p className="text-sm text-[color:var(--text-muted)] leading-relaxed">{t.body}</p>
-      <div className="mt-auto pt-4 border-t border-white/10 flex items-center gap-3">
-        <img
-          src={t.img}
-          alt={t.name}
-          loading="lazy"
-          className="h-12 w-12 rounded-full object-cover border-2 border-white/30"
-        />
-        <div className="flex-1 min-w-0">
-          <div className="font-extrabold text-sm truncate">{t.name}</div>
-          <div className="text-xs text-[color:var(--text-soft)] truncate">{t.title}</div>
+    <div className={`flex h-full flex-col overflow-hidden ${compact ? "p-6" : "p-8"}`}>
+      <div className="flex items-center gap-4">
+        <div className={`avatar-ring ${s.ring} !ml-0 ${compact ? "!w-14 !h-14" : "!w-20 !h-20"} !p-0 overflow-hidden shrink-0`}>
+          <img src={s.photo} alt={s.name} className="h-full w-full object-cover rounded-full" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className={`font-bold tracking-[0.2em] uppercase text-[color:var(--text-soft)] ${compact ? "text-[10px]" : "text-xs"}`}>
+            {s.role}
+          </div>
+          <div className={`font-extrabold ${compact ? "truncate text-xl" : "text-3xl"}`}>{s.name}</div>
         </div>
         <a
-          href={t.linkedin}
+          href={s.linkedin}
           target="_blank"
           rel="noreferrer"
-          className="h-8 w-8 rounded-lg border border-white/15 flex items-center justify-center hover:bg-white/10 transition flex-shrink-0"
-          aria-label={`${t.name} on LinkedIn`}
+          className={`flex shrink-0 items-center justify-center rounded-lg border border-white/15 hover:bg-white/10 transition ${compact ? "h-8 w-8" : "h-10 w-10"}`}
+          aria-label={`${s.name} on LinkedIn`}
+          onClick={(e) => e.stopPropagation()}
         >
-          <Linkedin className="h-3.5 w-3.5" />
+          <Linkedin className={compact ? "h-3.5 w-3.5" : "h-4 w-4"} />
         </a>
       </div>
-    </article>
+
+      <h3 className={`mt-4 font-bold gradient-text leading-snug ${compact ? "text-base" : "text-2xl"}`}>
+        <D text={s.tagline} />
+      </h3>
+      <p className={`mt-2 leading-relaxed text-[color:var(--text-soft)] ${compact ? "text-xs" : "text-base"}`}>{s.bio}</p>
+
+      <ul className={`space-y-2 ${compact ? "mt-4" : "mt-6 space-y-3"}`}>
+        {s.points.map((p) => (
+          <li key={p} className={`flex gap-2 text-[color:var(--text-muted)] ${compact ? "text-xs gap-2" : "text-sm gap-3"}`}>
+            <Check className={`mt-0.5 shrink-0 text-[#BDEEFF] ${compact ? "h-3.5 w-3.5" : "h-4 w-4"}`} strokeWidth={2.5} />
+            <span>{p}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div className={`mt-auto border-t border-white/10 ${compact ? "pt-4" : "pt-6"}`}>
+        <div className={`mb-2 flex items-center gap-2 font-bold tracking-[0.2em] uppercase text-[color:var(--text-soft)] ${compact ? "text-[10px]" : "text-xs"}`}>
+          <Mic className={compact ? "h-3 w-3" : "h-3.5 w-3.5"} /> Listen to {s.name}
+        </div>
+        <div className="overflow-hidden rounded-lg border border-white/10">
+          <iframe
+            src={s.podcast}
+            width="100%"
+            height="152"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            title={`${s.name} podcast`}
+            className={compact ? "pointer-events-none" : undefined}
+          />
+        </div>
+      </div>
+    </div>
   );
 }
 
+function SpeakerDetailModal({ speaker, onClose }: { speaker: Speaker | null; onClose: () => void }) {
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closingRef = useRef(false);
+
+  useEffect(() => {
+    if (!speaker || !overlayRef.current || !panelRef.current) return;
+
+    closingRef.current = false;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(overlayRef.current!, { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" });
+      gsap.fromTo(
+        panelRef.current!,
+        { opacity: 0, scale: 0.9, y: 56 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.65, ease: "power3.out" },
+      );
+    });
+
+    return () => ctx.revert();
+  }, [speaker]);
+
+  const handleClose = useCallback(() => {
+    if (closingRef.current || !speaker) return;
+
+    if (!overlayRef.current || !panelRef.current) {
+      onClose();
+      return;
+    }
+
+    closingRef.current = true;
+    gsap
+      .timeline({
+        onComplete: onClose,
+      })
+      .to(panelRef.current, { opacity: 0, scale: 0.94, y: 32, duration: 0.38, ease: "power2.in" })
+      .to(overlayRef.current, { opacity: 0, duration: 0.32, ease: "power2.in" }, "-=0.18");
+  }, [onClose, speaker]);
+
+  useEffect(() => {
+    if (!speaker) return;
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") handleClose();
+    };
+
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [speaker, handleClose]);
+
+  if (!speaker) return null;
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+      <div
+        ref={overlayRef}
+        className="absolute inset-0 bg-black/75 backdrop-blur-md"
+        onClick={handleClose}
+        aria-hidden
+      />
+      <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${speaker.name} — instructor details`}
+        className={`speaker-modal-frame relative w-full max-w-lg shadow-[0_40px_120px_rgba(200,139,239,0.35)] card--${speaker.ring}`}
+      >
+        <div className="speaker-modal-inner max-h-[min(88vh,820px)]">
+          <button
+            type="button"
+            onClick={handleClose}
+            className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/40 text-white/80 backdrop-blur-sm transition hover:bg-white/10 hover:text-white"
+            aria-label="Close"
+          >
+            <X className="h-4 w-4" />
+          </button>
+          <SpeakerSwapCardContent s={speaker} compact={false} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SpeakersCardSwap() {
+  const cardSwapRef = useRef<CardSwapHandle>(null);
+  const [modalSpeaker, setModalSpeaker] = useState<Speaker | null>(null);
+  const isMobile = useIsMobile();
+
+  const handleCardAction = useCallback((idx: number) => {
+    const frontIdx = cardSwapRef.current?.getFrontIndex() ?? 0;
+    if (idx === frontIdx) {
+      cardSwapRef.current?.pause();
+      setModalSpeaker(SPEAKERS[idx]);
+      return;
+    }
+    cardSwapRef.current?.bringToFront(idx);
+  }, []);
+
+  const handleModalClose = useCallback(() => {
+    setModalSpeaker(null);
+    cardSwapRef.current?.resume();
+  }, []);
+
+  return (
+    <section className="section-pad relative border-t border-white/5">
+      <div
+        data-parallax="0.25"
+        className="absolute bottom-0 -right-32 h-[600px] w-[600px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(200,139,239,0.12), transparent 70%)" }}
+      />
+      <div className="vc-container relative">
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)]">
+          <div className="max-w-xl" data-reveal>
+            <span className="badge-orange mb-4">Meet the instructors</span>
+            <h2 className="mt-4 text-4xl font-extrabold tracking-tight md:text-5xl">
+              <D text="Three builders. " />
+              <span className="gradient-text">
+                <D text="One complete playbook." />
+              </span>
+            </h2>
+            <p className="mt-4 text-lg text-[color:var(--text-muted)]">
+              Three instructors. One playbook — from problem to product to customer.
+            </p>
+          </div>
+
+          <div
+            className={`relative mx-auto w-full overflow-visible lg:mx-0 lg:ml-auto ${
+              isMobile ? "h-[480px] max-w-[min(100%,340px)]" : "h-[620px] max-w-[520px]"
+            }`}
+            data-reveal
+          >
+            <CardSwap
+              ref={cardSwapRef}
+              width={isMobile ? 320 : 400}
+              height={isMobile ? 440 : 520}
+              cardDistance={isMobile ? 0 : 50}
+              verticalDistance={isMobile ? 14 : 55}
+              delay={5000}
+              pauseOnHover
+              skewAmount={isMobile ? 0 : 5}
+              flat={isMobile}
+              containerClassName="card-swap-container--centered"
+            >
+              {SPEAKERS.map((s, i) => (
+                <Card
+                  key={s.name}
+                  className={`card--${s.ring} cursor-pointer shadow-[0_24px_80px_rgba(0,0,0,0.45)]`}
+                  onClick={(e) => {
+                    if ((e.target as HTMLElement).closest("a")) return;
+                    handleCardAction(i);
+                  }}
+                >
+                  <div className="card-inner">
+                    <SpeakerSwapCardContent s={s} />
+                  </div>
+                </Card>
+              ))}
+            </CardSwap>
+          </div>
+        </div>
+      </div>
+
+      <SpeakerDetailModal speaker={modalSpeaker} onClose={handleModalClose} />
+    </section>
+  );
+}
 
 function Audience() {
   const yes = [
@@ -859,10 +666,8 @@ function Audience() {
   const no = [
     "You want passive theory without hands-on work",
     "You expect AI to magically build a business for you",
-    "You don't want to think about customers, problems, or markets",
-    "You only want prompts without product thinking",
+    "You don't want to think about customers or markets",
     "You're looking for a generic coding class",
-    "You're not serious about building or launching something",
   ];
   return (
     <section className="section-pad">
@@ -902,61 +707,18 @@ function Audience() {
   );
 }
 
-function TakeHome() {
-  const items = [
-    "Lovable Pro Subscription — 1 Month (subject to confirmation)",
-    "Prompt Library used during the workshop",
-    "Printed Product Building Cheat Sheet",
-    "Rapid Product Development Roadmap",
-    "Physical Certificate of Completion (online verifiable)",
-    "Access to AI:BN — an AI-first community of builders",
-  ];
-  return (
-    <section className="section-pad bg-[color:var(--bg-section)]">
-      <div className="vc-container">
-        <div className="grid lg:grid-cols-[1fr_1.2fr] gap-12 items-start">
-          <div data-reveal>
-            <span className="text-sm font-bold tracking-[0.2em] uppercase text-[color:var(--text-soft)]">
-              What you'll bring
-            </span>
-            <div className="mt-4 flex items-center gap-3 text-3xl font-extrabold">
-              <Laptop className="h-8 w-8" /> Your laptop.
-            </div>
-            <p className="mt-3 text-[color:var(--text-muted)]">That's it. Come ready to build.</p>
-          </div>
-          <div className="glass-card p-8" data-reveal>
-            <span className="text-sm font-bold tracking-[0.2em] uppercase text-[color:var(--text-soft)]">
-              What you'll take home
-            </span>
-            <h3 className="mt-3 text-3xl font-extrabold">
-              <D text="Tools you'll " /><span className="gradient-text"><D text="actually use" /></span><D text="." />
-            </h3>
-            <ul className="mt-6 space-y-3.5" data-stagger>
-              {items.map((i) => (
-                <li key={i} className="flex items-start gap-3 text-[color:var(--text-muted)]" data-stagger-item>
-                  <div className="mt-1 h-5 w-5 rounded-md gradient-bg flex items-center justify-center flex-shrink-0">
-                    <Check className="h-3 w-3 text-[#050505]" strokeWidth={4} />
-                  </div>
-                  <span>{i}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function EventDetails() {
   return (
-    <section id="details" className="section-pad">
+    <section id="details" className="section-pad bg-[color:var(--bg-section)]">
       <div className="vc-container">
         <div className="text-center max-w-2xl mx-auto mb-14" data-reveal>
           <span className="badge-orange mb-4">Event Details</span>
           <h2 className="mt-4 text-4xl md:text-5xl font-extrabold tracking-tight">
             <D text="The " /><span className="gradient-text"><D text="essentials" /></span>
           </h2>
+          <p className="mt-4 text-[color:var(--text-muted)]">
+            Bring your laptop. Venue in Chennai will be shared with registered attendees.
+          </p>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5" data-stagger>
@@ -974,57 +736,6 @@ function EventDetails() {
               <div className="mt-1 text-lg font-bold text-white">{d.value}</div>
             </div>
           ))}
-        </div>
-
-        <div className="mt-8 glass-card p-8 md:p-10" data-reveal>
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <div>
-              <div className="flex items-center gap-2 text-[color:var(--text-soft)] text-sm font-bold tracking-[0.2em] uppercase">
-                <Users className="h-4 w-4" /> Limited Seats · Interactive Workshop
-              </div>
-              <h3 className="mt-3 text-3xl md:text-4xl font-extrabold tracking-tight flex items-center gap-1">
-                <IndianRupee className="h-7 w-7" />2,999 <span className="text-[color:var(--text-soft)] text-xl font-bold ml-2">per seat</span>
-              </h3>
-              <p className="mt-3 text-[color:var(--text-muted)] max-w-xl">
-                Includes all materials, refreshments, and a certificate of completion. Venue in Chennai will be shared with registered attendees.
-              </p>
-            </div>
-            <LumaButton className="btn-primary self-start">
-              Register Now <ArrowRight className="h-4 w-4" />
-            </LumaButton>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function FinalCTA() {
-  return (
-    <section className="section-pad hero-bg relative overflow-hidden">
-      <div
-        data-parallax="0.4"
-        className="absolute -top-40 left-1/4 w-[600px] h-[600px] rounded-full pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(200,139,239,0.20), transparent 70%)" }}
-      />
-      <div className="vc-container relative">
-        <div className="max-w-3xl" data-reveal>
-          <h2 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[0.95]">
-            <span className="block"><D text="Build the right thing." /></span>
-            <span className="block gradient-text"><D text="Build it the right way." /></span>
-            <span className="block"><D text="Take it to the right people." /></span>
-          </h2>
-          <p className="mt-8 text-xl text-[color:var(--text-muted)] max-w-2xl">
-            If you've ever wanted to build something meaningful with AI but weren't sure where to start — this is where you begin.
-          </p>
-          <div className="mt-10 flex flex-wrap gap-4">
-            <LumaButton>
-              Reserve Your Seat <ArrowRight className="h-4 w-4" />
-            </LumaButton>
-            <div className="flex items-center gap-2 text-[color:var(--text-soft)] text-sm">
-              <MapPin className="h-4 w-4" /> Chennai, Tamil Nadu, India
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -1053,6 +764,7 @@ function Pricing() {
     "Physical Certificate (online verifiable)",
     "Access to AI:BN builder community",
     "Light snacks & refreshments",
+    "Bring your laptop — that's all you need",
   ];
   return (
     <section className="section-pad relative">
@@ -1074,8 +786,7 @@ function Pricing() {
 
         <div data-scale-in className="relative max-w-3xl mx-auto">
           <div className="absolute -inset-8 rounded-[44px] gradient-bg opacity-30 blur-3xl" />
-          <ElectricBorder color="#C88BEF" speed={0.9} chaos={0.35} borderRadius={32} className="relative" style={{ padding: 14 }}>
-            <div className="relative glass-card p-10 md:p-14 text-center" style={{ borderRadius: 22 }}>
+          <div className="relative glass-card p-10 md:p-14 text-center rounded-[22px]">
             <div className="text-xs font-bold tracking-[0.3em] uppercase text-[color:var(--text-soft)]">
               General Admission
             </div>
@@ -1105,15 +816,14 @@ function Pricing() {
             </ul>
 
             <div className="mt-10 flex flex-col items-center gap-3">
-              <LumaButton>
+              <ReserveSeatButton>
                 Reserve Your Seat <ArrowRight className="h-4 w-4" />
-              </LumaButton>
+              </ReserveSeatButton>
               <span className="text-xs text-[color:var(--text-soft)]">
-                Secure checkout via Luma · Limited seats
+                First come, first served · Limited seats
               </span>
             </div>
           </div>
-          </ElectricBorder>
         </div>
       </div>
     </section>

@@ -1,0 +1,96 @@
+.card-swap-container {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(5%, 20%);
+  transform-origin: bottom right;
+
+  perspective: 900px;
+  overflow: visible;
+  pointer-events: auto;
+}
+
+.card-swap-container--centered {
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, 10%);
+  transform-origin: center bottom;
+}
+
+.card-swap-container--flat {
+  perspective: none;
+}
+
+.card-swap-container--flat .card {
+  transform-style: flat;
+}
+
+.card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 14px;
+  border: none;
+  padding: 2px;
+  background: var(--gradient-primary);
+
+  transform-style: preserve-3d;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: box-shadow 0.35s ease;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.card--r1 {
+  background: linear-gradient(135deg, #e6ff6b 0%, #a4d34a 55%, #75a7ff 100%);
+}
+
+.card--r2 {
+  background: linear-gradient(135deg, #75a7ff 0%, #8ea7ff 50%, #bdeeff 100%);
+}
+
+.card--r3 {
+  background: linear-gradient(135deg, #ff4e9b 0%, #c88bef 50%, #8ea7ff 100%);
+}
+
+.card-inner {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--bg-card, #141418);
+  pointer-events: none;
+}
+
+.card-inner a,
+.card-inner button {
+  pointer-events: auto;
+}
+
+.card:hover {
+  box-shadow: 0 28px 90px rgba(200, 139, 239, 0.22);
+}
+
+.speaker-modal-frame {
+  border-radius: 28px;
+  padding: 2px;
+  overflow: visible;
+  isolation: isolate;
+}
+
+.speaker-modal-inner {
+  height: 100%;
+  width: 100%;
+  border-radius: 26px;
+  background: var(--bg-card, #141418);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+@media (max-width: 767px) {
+  .card-swap-container--centered {
+    transform: translate(-50%, 0);
+  }
+}
