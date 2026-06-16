@@ -7,6 +7,7 @@ import {
   GraduationCap,
   Library,
   MapPin,
+  MessageCircle,
   Megaphone,
   Rocket,
   Sparkles,
@@ -19,6 +20,9 @@ import {
 import hameedPhoto from "@/assets/hameed.jpeg";
 import hariPhoto from "@/assets/hari.png";
 import leoPhoto from "@/assets/leo.jpeg";
+import doingThingsAiLogo from "@/assets/doing-things-ai.png";
+import lovableIconDark from "/Users/icrewsystemshq/.cursor/projects/Users-icrewsystemshq-Herd-vibe-product-lab/assets/lovable-icon-bg-dark-069c5a48-082c-4cf3-b2c5-e0fe8b4a83b0.png";
+import sayaboutusTextmarkDark from "/Users/icrewsystemshq/.cursor/projects/Users-icrewsystemshq-Herd-vibe-product-lab/assets/sayaboutus-textmark-dark-38dfd133-4fee-4029-8a3b-92d4a66a48d3.png";
 
 export type Speaker = {
   ring: "r1" | "r2" | "r3";
@@ -94,38 +98,48 @@ export const WORKSHOP_BENEFITS: Array<{
   title: string;
   desc: string;
   className: string;
+  logo?: string;
+  logoClassName?: string;
 }> = [
   {
-    icon: GraduationCap,
-    title: "Live with all 3 instructors",
-    desc: "One room. One flow. Real-time feedback while you build.",
-    className: "md:col-span-2",
+    icon: Gift,
+    title: "Lovable Credits (300)",
+    desc: "Build and iterate without hitting free-plan limits. Equivalent usage would otherwise cost about $20 USD/month for similar capacity.",
+    logo: lovableIconDark.src,
+    className: "min-h-[280px]",
+    logoClassName: "h-14 w-14 rounded-xl object-cover ring-1 ring-white/15",
   },
-  { icon: Gift, title: "Lovable Pro", desc: "1 month included.", className: "" },
   {
     icon: Library,
-    title: "Prompt library",
-    desc: "Battle-tested prompts and frameworks.",
-    className: "",
+    title: "Prompt Library + Build Stack",
+    desc: "Ship faster with proven prompts, 100+ website design references, and ready n8n automations for your Minimum Lovable Product.",
+    className: "min-h-[240px]",
+  },
+  {
+    icon: MessageCircle,
+    title: "SayAboutUs Credits",
+    desc: "Collect fast, actionable feedback for your product using SayAboutUs credits included with your workshop access.",
+    logo: sayaboutusTextmarkDark.src,
+    className: "min-h-[260px]",
+    logoClassName: "h-12 w-auto max-w-[220px] object-contain",
+  },
+  {
+    icon: Users,
+    title: "AI Builders Network Access",
+    desc: "Get unstuck fast in a private Telegram group with active builders sharing feedback, tools, and launch lessons.",
+    className: "min-h-[220px]",
+  },
+  {
+    icon: Award,
+    title: "Physical Launch Certificate",
+    desc: "Show credible proof that you launched. Share digitally verifiable credentials with recruiters, clients, and your network.",
+    className: "min-h-[220px]",
   },
   {
     icon: Megaphone,
-    title: "Build -> Launch clarity",
-    desc: "From product thinking to first users with a practical GTM path.",
-    className: "md:col-span-2",
-  },
-  { icon: Award, title: "Certificate", desc: "Physical certificate (verifiable).", className: "" },
-  {
-    icon: Users,
-    title: "Builder community",
-    desc: "Access to AI:BN network after the workshop.",
-    className: "",
-  },
-  {
-    icon: Coffee,
-    title: "Snacks & refreshments",
-    desc: "Stay in flow for the full 4-hour sprint.",
-    className: "md:col-span-2",
+    title: "Vibe Coder Swag Stickers",
+    desc: "Signal that you build in public. Use the sticker pack as social proof and a conversation starter with other makers.",
+    className: "min-h-[240px]",
   },
 ];
 
@@ -259,15 +273,57 @@ export const TESTIMONIALS: Testimonial[] = [
   },
 ];
 
-export const SPONSORS = [
-  { name: "Paperflite", logo: "https://logo.clearbit.com/paperflite.com" },
+export type Sponsor = {
+  name: string;
+  logo?: string;
+  logoClass?: string;
+  href?: string;
+};
+
+export const SPONSORS: Sponsor[] = [
   {
-    name: "Lovable",
-    logo: "https://images.seeklogo.com/logo-png/61/1/lovable-logo-png_seeklogo-618223.png",
-    logoClass: "h-7 w-auto object-contain",
+    name: "iCrewSystems",
+    logo: "https://logo.clearbit.com/icrewsystems.com",
+    href: "https://icrewsystems.com",
   },
-  { name: "Razorpay", logo: "https://logo.clearbit.com/razorpay.com" },
-  { name: "Notion", logo: "https://logo.clearbit.com/notion.so" },
+  {
+    name: "SayAboutUs",
+    logo: sayaboutusTextmarkDark.src,
+    logoClass: "h-7 w-auto max-w-[140px] object-contain",
+    href: "https://sayabout.us",
+  },
+  {
+    name: "Cloud Engine Labs",
+    logo: "https://logo.clearbit.com/cloudenginelabs.com",
+    href: "https://cloudenginelabs.com",
+  },
+  {
+    name: "HoldYourVoice",
+    logo: "https://logo.clearbit.com/holdyourvoice.com",
+    href: "https://holdyourvoice.com",
+  },
+  {
+    name: "AI Builders Network",
+    logo: "https://logo.clearbit.com/aibn.in",
+    href: "https://aibn.in",
+  },
+  {
+    name: "Proof by Zero Maintenance Engineers",
+    logo: "https://logo.clearbit.com/zeromaintenance.engineers",
+    logoClass: "h-8 w-auto max-w-[160px] object-contain",
+    href: "https://zeromaintenance.engineers",
+  },
+  {
+    name: "Paperflite",
+    logo: "https://logo.clearbit.com/paperflite.com",
+    href: "https://paperflite.com",
+  },
+  {
+    name: "Doing Things AI",
+    logo: doingThingsAiLogo.src,
+    logoClass:
+      "h-10 w-auto max-w-[140px] object-contain opacity-90 brightness-0 invert transition-opacity group-hover:opacity-100",
+  },
 ];
 
 export const FIT_AUDIENCE = [
@@ -287,17 +343,36 @@ export const SKIP_AUDIENCE = [
 ];
 
 export const EVENT_DETAILS: Array<{ icon: LucideIcon; label: string; value: string }> = [
-  { icon: Calendar, label: "Date", value: "27 June 2026" },
-  { icon: Clock, label: "Duration", value: "4-Hour Intensive" },
+  { icon: Calendar, label: "When", value: "27 June 2026 · Saturday · 4 hours" },
   {
     icon: MapPin,
-    label: "Location",
+    label: "Where",
     value: "Paperflite: 383, 1st Cross St, Nehru Nagar, Perungudi, Chennai, Tamil Nadu 600041",
   },
-  { icon: Coffee, label: "Included", value: "Light Snacks & Refreshments" },
+  {
+    icon: Coffee,
+    label: "What",
+    value: "Live intensive workshop, practical frameworks, and snacks + refreshments.",
+  },
+  {
+    icon: Users,
+    label: "Who",
+    value: "Founders, PMs, developers, students, freelancers, and operators building with AI.",
+  },
 ];
 
-export const BRING_ITEMS = ["Your laptop", "An idea you want to build", "4 focused hours"];
+export const BRING_ITEMS = ["Your laptop", "An idea you're excited to build", "4 focused hours of your time"];
+
+export const PRICING_INCLUDES = [
+  "4-hour live workshop with Hameed, Leo & Hari",
+  "Full playbook: identify → validate → build → launch",
+  "Lovable credits (300) to ship your MLP",
+  "Prompt library, design refs & n8n templates",
+  "SayAboutUs credits for product feedback",
+  "AI Builders Network community access",
+  "Physical launch certificate + vibe coder swag",
+  "Snacks and refreshments on the day",
+];
 
 export const toYouTubeEmbedUrl = (url: string) => {
   try {

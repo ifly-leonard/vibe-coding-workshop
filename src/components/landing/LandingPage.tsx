@@ -17,6 +17,7 @@ import { Hero } from "@/components/landing/sections/Hero";
 import { Nav } from "@/components/landing/sections/Nav";
 import { SpeakersCardSwap } from "@/components/landing/sections/Speakers";
 import { Testimonials } from "@/components/landing/sections/Testimonials";
+import { WhatToBring } from "@/components/landing/sections/WhatToBring";
 import { useLandingAnimations } from "@/components/landing/useLandingAnimations";
 
 export function LandingPage() {
@@ -29,12 +30,13 @@ export function LandingPage() {
         <Nav />
         <Hero />
         <WhyMatters />
-        <EventDetails />
-        <WhatYouLearn />
-        <WhatYouGetBento />
         <SpeakersCardSwap />
-        <Audience />
+        <EventDetails />        
+        <WhatToBring />
+        <WhatYouLearn />        
+        <WhatYouGetBento />                
         <Pricing />
+        <Audience />
         <Testimonials />
         <Sponsors />
         <Footer />

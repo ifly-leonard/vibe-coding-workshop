@@ -1,4 +1,4 @@
-export const TICKET_PRICE_INR = 2999;
+export const TICKET_PRICE_INR = 3499;
 
 export const VIBE_EXPERIENCE_OPTIONS = [
   { value: "curious", label: "I want to, but don't know how to" },
@@ -8,7 +8,7 @@ export const VIBE_EXPERIENCE_OPTIONS = [
 
 export type VibeExperience = (typeof VIBE_EXPERIENCE_OPTIONS)[number]["value"];
 
-export const PAYMENT_NOTE = `₹${TICKET_PRICE_INR.toLocaleString("en-IN")} per seat (+ applicable GST)`;
+export const PAYMENT_NOTE = `₹${TICKET_PRICE_INR.toLocaleString("en-IN")} per seat — full workshop access and builder perks included.`;
 
 export const TERMS_AND_CONDITIONS = `
 1. Right of admission is strictly reserved by the organisers. A completed payment alone does not guarantee entry if seats are full or if registration details cannot be verified.
@@ -17,7 +17,7 @@ export const TERMS_AND_CONDITIONS = `
 
 3. You must provide accurate contact information. We will reach out via email or phone to confirm your registration.
 
-4. The ticket price is ₹2,999 per seat plus applicable GST. Payment must be completed in full via Razorpay before the event.
+4. The ticket price is ₹${TICKET_PRICE_INR.toLocaleString("en-IN")} per seat. Payment must be completed in full via Razorpay before the event.
 
 5. Refunds are not available except where the event is cancelled by the organisers. In case of cancellation, refunds will be processed within 14 business days.
 
