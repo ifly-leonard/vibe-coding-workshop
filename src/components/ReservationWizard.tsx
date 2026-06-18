@@ -1,3 +1,5 @@
+"use client";
+
 import {
   createContext,
   useCallback,
@@ -5,40 +7,14 @@ import {
   useEffect,
   useRef,
   useState,
-  type FormEvent,
   type ReactNode,
 } from "react";
-import { useRouter } from "next/navigation";
 import gsap from "gsap";
-import {
-  ArrowLeft,
-  ArrowRight,
-  CreditCard,
-  IndianRupee,
-  Loader2,
-  ShieldAlert,
-  X,
-} from "lucide-react";
+import { ExternalLink, Loader2 } from "lucide-react";
 
-import { completeReservation, createRazorpayOrder } from "@/lib/api/reservation.functions";
-import { openRazorpayCheckout } from "@/lib/razorpay";
-import {
-  TERMS_AND_CONDITIONS,
-  TICKET_PRICE_INR,
-  VIBE_EXPERIENCE_OPTIONS,
-  type VibeExperience,
-} from "@/lib/reservation.constants";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { FloatingReserveButton } from "@/components/FloatingReserveButton";
 import { useScrollSpyInView } from "@/hooks/use-scroll-spy-in-view";
+import { getRazorpayPaymentPageUrl } from "@/lib/reservation.constants";
 
 type ReservationContextValue = {
   openReservation: () => void;
@@ -47,6 +23,7 @@ type ReservationContextValue = {
 const ReservationContext = createContext<ReservationContextValue | null>(null);
 
 const PRICING_SECTION_ID = "pricing";
+const REDIRECT_DELAY_MS = 1200;
 
 function FloatingReserveGate({
   reservationOpen,
@@ -68,7 +45,7 @@ export function ReservationProvider({ children }: { children: ReactNode }) {
     <ReservationContext.Provider value={{ openReservation }}>
       {children}
       <FloatingReserveGate reservationOpen={open} onOpen={openReservation} />
-      <ReservationWizard open={open} onOpenChange={setOpen} />
+      <ReservationRedirectModal open={open} onOpenChange={setOpen} />
     </ReservationContext.Provider>
   );
 }
@@ -96,89 +73,19 @@ export function ReserveSeatButton({ className = "btn-primary", children }: Reser
   );
 }
 
-type StepOneData = {
-  name: string;
-  email: string;
-  phone: string;
-  linkedin: string;
-  experience: VibeExperience | "";
-};
-
-type ReservationWizardProps = {
+type ReservationRedirectModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
 
-function ReservationWizard({ open, onOpenChange }: ReservationWizardProps) {
-  const router = useRouter();
+function ReservationRedirectModal({ open, onOpenChange }: ReservationRedirectModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  const stepContentRef = useRef<HTMLDivElement>(null);
-  const closingRef = useRef(false);
-
-  const [step, setStep] = useState<1 | 2>(1);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [errorHighlight, setErrorHighlight] = useState(false);
-  const errorHighlightTimeoutRef = useRef<number | undefined>(undefined);
-  const [stepOne, setStepOne] = useState<StepOneData>({
-    name: "",
-    email: "",
-    phone: "",
-    linkedin: "",
-    experience: "",
-  });
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
-
-  const reset = useCallback(() => {
-    setStep(1);
-    setSubmitting(false);
-    setError(null);
-    setErrorHighlight(false);
-    window.clearTimeout(errorHighlightTimeoutRef.current);
-    setStepOne({ name: "", email: "", phone: "", linkedin: "", experience: "" });
-    setAcceptedTerms(false);
-    closingRef.current = false;
-  }, []);
-
-  const clearError = useCallback(() => {
-    setError(null);
-    setErrorHighlight(false);
-    window.clearTimeout(errorHighlightTimeoutRef.current);
-  }, []);
-
-  const showValidationError = useCallback((message: string) => {
-    setError(message);
-    setErrorHighlight(false);
-    window.clearTimeout(errorHighlightTimeoutRef.current);
-
-    requestAnimationFrame(() => {
-      setErrorHighlight(true);
-      errorHighlightTimeoutRef.current = window.setTimeout(() => {
-        setErrorHighlight(false);
-      }, 520);
-    });
-  }, []);
-
-  const handleClose = useCallback(() => {
-    if (closingRef.current || !overlayRef.current || !panelRef.current) return;
-    closingRef.current = true;
-
-    gsap
-      .timeline({
-        onComplete: () => {
-          onOpenChange(false);
-          window.setTimeout(reset, 50);
-        },
-      })
-      .to(panelRef.current, { opacity: 0, y: 28, scale: 0.96, duration: 0.32, ease: "power2.in" })
-      .to(overlayRef.current, { opacity: 0, duration: 0.28, ease: "power2.in" }, "-=0.2");
-  }, [onOpenChange, reset]);
+  const paymentPageUrl = getRazorpayPaymentPageUrl();
 
   useEffect(() => {
-    if (!open || !overlayRef.current || !panelRef.current) return;
+    if (!open || !overlayRef.current || !panelRef.current || !paymentPageUrl) return;
 
-    closingRef.current = false;
     document.body.style.overflow = "hidden";
 
     gsap.set(overlayRef.current, { opacity: 0 });
@@ -196,125 +103,16 @@ function ReservationWizard({ open, onOpenChange }: ReservationWizardProps) {
       });
     });
 
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && !submitting) handleClose();
-    };
-    window.addEventListener("keydown", onKey);
+    const redirectTimer = window.setTimeout(() => {
+      window.location.assign(paymentPageUrl);
+    }, REDIRECT_DELAY_MS);
 
     return () => {
-      window.removeEventListener("keydown", onKey);
+      window.clearTimeout(redirectTimer);
       document.body.style.overflow = "";
       ctx.revert();
     };
-  }, [open, handleClose, submitting]);
-
-  useEffect(() => {
-    if (!open || !stepContentRef.current) return;
-
-    gsap.fromTo(
-      stepContentRef.current,
-      { opacity: 0, x: step === 1 ? -18 : 18 },
-      { opacity: 1, x: 0, duration: 0.4, ease: "power2.out" },
-    );
-  }, [open, step]);
-
-  const validateStepOne = () => {
-    if (stepOne.name.trim().length < 2) return "Please enter your name.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(stepOne.email.trim()))
-      return "Please enter a valid email.";
-    if (!/^[+\d\s-]{10,15}$/.test(stepOne.phone.trim()))
-      return "Please enter a valid phone number.";
-    if (!stepOne.linkedin.trim()) return "Please enter your LinkedIn profile URL.";
-    if (!/^https?:\/\/.+/i.test(stepOne.linkedin.trim())) {
-      return "Please enter a valid LinkedIn URL.";
-    }
-    if (!stepOne.experience) return "Please select your vibe coding experience.";
-    return null;
-  };
-
-  const handleStepOneSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const message = validateStepOne();
-    if (message) {
-      showValidationError(message);
-      return;
-    }
-    clearError();
-    setStep(2);
-  };
-
-  const handlePayWithRazorpay = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!acceptedTerms) {
-      showValidationError("Please accept the terms and conditions.");
-      return;
-    }
-
-    const message = validateStepOne();
-    if (message) {
-      showValidationError(message);
-      setStep(1);
-      return;
-    }
-
-    setSubmitting(true);
-    clearError();
-
-    const registration = {
-      name: stepOne.name.trim(),
-      email: stepOne.email.trim(),
-      phone: stepOne.phone.trim(),
-      linkedin: stepOne.linkedin.trim(),
-      experience: stepOne.experience as VibeExperience,
-    };
-
-    try {
-      const order = await createRazorpayOrder({ data: registration });
-
-      await openRazorpayCheckout({
-        keyId: order.keyId,
-        orderId: order.orderId,
-        amount: Number(order.amount),
-        currency: order.currency,
-        name: registration.name,
-        email: registration.email,
-        phone: registration.phone,
-        onDismiss: () => setSubmitting(false),
-        onSuccess: async (response) => {
-          try {
-            const result = await completeReservation({
-              data: {
-                ...registration,
-                acceptedTerms: true,
-                razorpayOrderId: response.razorpay_order_id,
-                razorpayPaymentId: response.razorpay_payment_id,
-                razorpaySignature: response.razorpay_signature,
-              },
-            });
-
-            if (!result.ok) {
-              throw new Error("Confirmation failed");
-            }
-
-            closingRef.current = true;
-            onOpenChange(false);
-            reset();
-            router.push("/thank-you");
-          } catch {
-            showValidationError(
-              "Payment received but confirmation failed. Contact us with your payment ID.",
-            );
-            setSubmitting(false);
-          }
-        },
-      });
-    } catch (err) {
-      showValidationError(
-        err instanceof Error ? err.message : "Unable to start payment. Please try again.",
-      );
-      setSubmitting(false);
-    }
-  };
+  }, [open, paymentPageUrl]);
 
   if (!open) return null;
 
@@ -553,55 +351,29 @@ function ReservationWizard({ open, onOpenChange }: ReservationWizardProps) {
               className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700"
               role="alert"
             >
-              {error}
+              Continue to payment
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          </>
+        ) : (
+          <>
+            <h2 id="reservation-title" className="text-2xl font-extrabold tracking-tight">
+              Payment link unavailable
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-[color:var(--text-muted)]">
+              Set <code className="text-white">NEXT_PUBLIC_RAZORPAY_PAYMENT_PAGE_URL</code> in your
+              environment and try again.
             </p>
-          ) : null}
+          </>
+        )}
 
-          <div className="flex items-center justify-between gap-3">
-            {step === 2 ? (
-              <button
-                type="button"
-                onClick={() => {
-                  clearError();
-                  setStep(1);
-                }}
-                className="btn-secondary !py-2.5 !px-4 !text-sm"
-                disabled={submitting}
-              >
-                <ArrowLeft className="h-4 w-4" /> Back
-              </button>
-            ) : (
-              <div />
-            )}
-
-            {step === 1 ? (
-              <button
-                type="submit"
-                form="reservation-step-one"
-                className="btn-primary !py-2.5 !px-5 !text-sm"
-              >
-                Continue <ArrowRight className="h-4 w-4" />
-              </button>
-            ) : (
-              <button
-                type="submit"
-                form="reservation-step-two"
-                className="btn-primary !py-2.5 !px-5 !text-sm"
-                disabled={submitting}
-              >
-                {submitting ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" /> Processing…
-                  </>
-                ) : (
-                  <>
-                    Pay with Razorpay <CreditCard className="h-4 w-4" />
-                  </>
-                )}
-              </button>
-            )}
-          </div>
-        </div>
+        <button
+          type="button"
+          onClick={() => onOpenChange(false)}
+          className="mt-6 text-xs text-[color:var(--text-soft)] transition hover:text-white"
+        >
+          Cancel
+        </button>
       </div>
     </div>
   );
