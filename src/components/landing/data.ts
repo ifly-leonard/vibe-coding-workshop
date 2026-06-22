@@ -20,6 +20,7 @@ import {
 import hameedPhoto from "@/assets/hameed.jpeg";
 import hariPhoto from "@/assets/hari.png";
 import leoPhoto from "@/assets/leo.png";
+import aibnLogo from "@/assets/aibn-logo.svg";
 import doingThingsAiLogo from "@/assets/doing-things-ai-community.png";
 import icrewsystemsLogo from "@/assets/icrewsystems-logo.png";
 import lovableIconDark from "@/assets/lovable-icon-bg-dark.png";
@@ -338,7 +339,8 @@ export const SPONSORS: Sponsor[] = [
   },
   {
     name: "AI Builders Network",
-    href: "https://aibn.in",
+    logo: aibnLogo.src,
+    href: "https://aibuildersnetwork.in/",
   },
 ];
 
