@@ -451,6 +451,7 @@
     align-items: center;
     justify-content: center;
     min-height: 96px;
+    overflow: hidden;
     border: 1px solid oklch(0.18 0.008 60 / 8%);
     border-radius: 14px;
     background: var(--bg-card);

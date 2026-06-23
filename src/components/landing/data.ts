@@ -21,11 +21,16 @@ import hameedPhoto from "@/assets/hameed.jpeg";
 import hariPhoto from "@/assets/hari.png";
 import leoPhoto from "@/assets/leo.png";
 import aibnLogo from "@/assets/aibn-logo.svg";
+import beingSceniusLogo from "@/assets/being-scenius-with-sriram-selvan.png";
 import doingThingsAiLogo from "@/assets/doing-things-ai-community.png";
 import icrewsystemsLogo from "@/assets/icrewsystems-logo.png";
+import makerstribeLogo from "@/assets/makerstribe-logo.png";
 import lovableIconDark from "@/assets/lovable-icon-bg-dark.png";
 import paperfliteWordmark from "@/assets/paperflite-wordmark.png";
+import proofPrimaryCream from "@/assets/proof-primary-cream.png";
 import sayaboutusWordmark from "@/assets/sayaboutus-wordmark.png";
+import teediansWordmark from "@/assets/teedians-wordmark.png";
+import wepixLogo from "@/assets/wepix-logo.png";
 import {
   LOVABLE_CREDITS_VALUE_INR,
   SAYABOUTUS_CREDITS_VALUE_INR,
@@ -298,32 +303,39 @@ export type Sponsor = {
 
 export const SPONSORS: Sponsor[] = [
   {
-    name: "iCrewSystems",
-    logo: icrewsystemsLogo.src,
-    logoClass: "h-8 w-auto max-w-[148px] object-contain",
-    href: "https://icrewsystems.com",
+    name: "AI Builders Network",
+    logo: aibnLogo.src,
+    href: "https://aibuildersnetwork.in/",
   },
   {
-    name: "SayAboutUs",
-    logo: sayaboutusWordmark.src,
-    logoClass: "h-8 w-auto max-w-[124px] rounded-md object-contain",
-    href: "https://sayabout.us",
+    name: "Being Scenius with Sriram Selvan",
+    logo: beingSceniusLogo.src,
+    logoClass: "h-12 w-auto max-w-[120px] rounded-md object-contain",
   },
   {
     name: "Cloud Engine Labs",
     href: "https://www.cloudenginelabs.io/",
   },
   {
+    name: "Doing Things AI",
+    logo: doingThingsAiLogo.src,
+    logoClass:
+      "h-14 w-[148px] max-h-14 origin-center scale-[2.5] object-contain opacity-90 transition-opacity group-hover:opacity-100",
+  },
+  {
     name: "HoldYourVoice",
     href: "https://holdyourvoice.com/",
   },
   {
-    name: "Wepix AI",
-    href: "https://www.wepix.in/business/ai-agents",
+    name: "icrewsystems",
+    logo: icrewsystemsLogo.src,
+    logoClass: "h-8 w-auto max-w-[148px] object-contain",
+    href: "https://icrewsystems.com",
   },
   {
-    name: "Proof by Zero Maintenance Engineers",
-    href: "https://proof.zeromaintenanceengineer.in/",
+    name: "MakersTribe",
+    logo: makerstribeLogo.src,
+    logoClass: "h-14 w-auto max-w-[72px] object-contain",
   },
   {
     name: "Paperflite",
@@ -332,15 +344,27 @@ export const SPONSORS: Sponsor[] = [
     href: "https://www.paperflite.com/",
   },
   {
-    name: "Doing Things AI",
-    logo: doingThingsAiLogo.src,
-    logoClass:
-      "w-[148px] h-auto max-h-14 object-contain opacity-90 transition-opacity group-hover:opacity-100",
+    name: "Proof by Zero Maintenance Engineers",
+    logo: proofPrimaryCream.src,
+    logoClass: "h-8 w-auto max-w-[140px] rounded-md object-contain",
+    href: "https://proof.zeromaintenanceengineer.in/",
   },
   {
-    name: "AI Builders Network",
-    logo: aibnLogo.src,
-    href: "https://aibuildersnetwork.in/",
+    name: "SayAboutUs",
+    logo: sayaboutusWordmark.src,
+    logoClass: "h-8 w-auto max-w-[124px] rounded-md object-contain",
+    href: "https://sayabout.us",
+  },
+  {
+    name: "Teedians",
+    logo: teediansWordmark.src,
+    logoClass: "h-9 w-auto max-w-[180px] rounded-md object-contain",
+  },
+  {
+    name: "Wepix AI",
+    logo: wepixLogo.src,
+    logoClass: "h-9 w-auto max-w-[180px] object-contain scale-[2.5]",
+    href: "https://www.wepix.in/business/ai-agents",
   },
 ];
 
