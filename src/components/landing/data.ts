@@ -22,6 +22,8 @@ import hariPhoto from "@/assets/hari.png";
 import leoPhoto from "@/assets/leo.png";
 import aibnLogo from "@/assets/aibn-logo.svg";
 import doingThingsAiLogo from "@/assets/doing-things-ai-community.png";
+import pmfLogo from "@/assets/pmf-logo.jpg";
+import founderCircleLogo from "@/assets/founder-circle-logo.jpg";
 import icrewsystemsLogo from "@/assets/icrewsystems-logo.png";
 import lovableIconDark from "@/assets/lovable-icon-bg-dark.png";
 import paperfliteWordmark from "@/assets/paperflite-wordmark.png";
@@ -341,6 +343,18 @@ export const SPONSORS: Sponsor[] = [
     name: "AI Builders Network",
     logo: aibnLogo.src,
     href: "https://aibuildersnetwork.in/",
+  },
+  {
+    name: "Product Market Fit Co.",
+    logo: pmfLogo.src,
+    logoClass:
+      "h-16 w-auto max-w-[120px] object-contain opacity-90 transition-opacity group-hover:opacity-100",
+  },
+  {
+    name: "The Founder Circle",
+    logo: founderCircleLogo.src,
+    logoClass:
+      "h-16 w-auto max-w-[120px] object-contain opacity-90 transition-opacity group-hover:opacity-100",
   },
 ];
 
