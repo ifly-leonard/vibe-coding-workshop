@@ -23,6 +23,8 @@ import leoPhoto from "@/assets/leo.png";
 import aibnLogo from "@/assets/aibn-logo.svg";
 import beingSceniusLogo from "@/assets/being-scenius-with-sriram-selvan.png";
 import doingThingsAiLogo from "@/assets/doing-things-ai-community.png";
+import pmfLogo from "@/assets/pmf-logo.jpg";
+import founderCircleLogo from "@/assets/founder-circle-logo.jpg";
 import icrewsystemsLogo from "@/assets/icrewsystems-logo.png";
 import makerstribeLogo from "@/assets/makerstribe-logo.png";
 import lovableIconDark from "@/assets/lovable-icon-bg-dark.png";
@@ -365,6 +367,18 @@ export const SPONSORS: Sponsor[] = [
     logo: wepixLogo.src,
     logoClass: "h-9 w-auto max-w-[180px] object-contain scale-[2.5]",
     href: "https://www.wepix.in/business/ai-agents",
+  },
+  {
+    name: "Product Market Fit Co.",
+    logo: pmfLogo.src,
+    logoClass:
+      "h-16 w-auto max-w-[120px] object-contain opacity-90 transition-opacity group-hover:opacity-100",
+  },
+  {
+    name: "The Founder Circle",
+    logo: founderCircleLogo.src,
+    logoClass:
+      "h-16 w-auto max-w-[120px] object-contain opacity-90 transition-opacity group-hover:opacity-100",
   },
 ];
 
