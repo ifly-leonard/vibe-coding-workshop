@@ -335,12 +335,7 @@ function fitWrappedName(
   };
 }
 
-function attendeeTextMaxWidth(
-  width: number,
-  height: number,
-  scale: number,
-  pad: number,
-) {
+function attendeeTextMaxWidth(width: number, height: number, scale: number, pad: number) {
   const avatarCx = bgX(950, width);
   const avatarRadius = bgSize(300, width, height) * scale;
   const avatarRing = Math.max(10, bgSize(5, width, height));
@@ -480,29 +475,23 @@ async function drawSocialImage(
     titleTwoLine = true;
   }
 
-  const titleHeight = titleTwoLine
-    ? Math.round(titleSize * 2.15)
-    : Math.round(titleSize * 1.15);
+  const titleHeight = titleTwoLine ? Math.round(titleSize * 2.15) : Math.round(titleSize * 1.15);
 
   const attendeeTextW = attendeeTextMaxWidth(width, height, s, pad);
   const companyLineHeight = Math.round(companySize * 1.28);
 
-  const { size: nameSize, lines: nameLines, lineHeight: nameLineHeight } = fitWrappedName(
-    ctx,
-    displayName,
-    attendeeTextW,
-    nameMaxSize,
-    nameMinSize,
-  );
+  const {
+    size: nameSize,
+    lines: nameLines,
+    lineHeight: nameLineHeight,
+  } = fitWrappedName(ctx, displayName, attendeeTextW, nameMaxSize, nameMinSize);
 
   ctx.font = `600 ${companySize}px "Inter Tight", system-ui, sans-serif`;
   const companyLines = company ? wrapText(ctx, company, attendeeTextW) : [];
 
   const nameBlockHeight = nameLines.length * nameLineHeight;
   const companyBlockHeight =
-    companyLines.length > 0
-      ? spacing(s, "sm") + companyLines.length * companyLineHeight
-      : 0;
+    companyLines.length > 0 ? spacing(s, "sm") + companyLines.length * companyLineHeight : 0;
   const attendeeBlockHeight = nameBlockHeight + companyBlockHeight;
 
   let y = pad;
@@ -568,7 +557,14 @@ async function drawSocialImage(
     ctx.fillText(" Way", titleX, titleLine2Top);
   }
 
-  const hostsEndX = drawHostAvatarStack(ctx, pad, hostsTop, hostAvatarSize, hostOverlap, hostImages);
+  const hostsEndX = drawHostAvatarStack(
+    ctx,
+    pad,
+    hostsTop,
+    hostAvatarSize,
+    hostOverlap,
+    hostImages,
+  );
   ctx.fillStyle = C.muted;
   ctx.font = `600 ${bylineSize}px "Inter Tight", system-ui, sans-serif`;
   const bylineTop = hostsTop + Math.round((hostAvatarSize - bylineSize) * 0.35);

@@ -45,10 +45,7 @@ type EventPreparationsPageProps = {
   organisation: string;
 };
 
-export function EventPreparationsPage({
-  attendeeName,
-  organisation,
-}: EventPreparationsPageProps) {
+export function EventPreparationsPage({ attendeeName, organisation }: EventPreparationsPageProps) {
   const firstName = attendeeName.trim().split(/\s+/)[0] ?? attendeeName;
   const { isDesktop, lanyardView } = useLanyardLayout();
 

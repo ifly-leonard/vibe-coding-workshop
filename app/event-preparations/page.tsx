@@ -21,8 +21,7 @@ type PageProps = {
 export default async function Page({ searchParams }: PageProps) {
   const params = await searchParams;
   const name = params.name?.trim() || DEFAULT_NAME;
-  const organisation =
-    params.organisation?.trim() || params.org?.trim() || DEFAULT_ORGANISATION;
+  const organisation = params.organisation?.trim() || params.org?.trim() || DEFAULT_ORGANISATION;
 
   return <EventPreparationsPage attendeeName={name} organisation={organisation} />;
 }

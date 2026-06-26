@@ -103,7 +103,11 @@ export function PrepHeroCard({ attendeeName, organisation }: PrepHeroCardProps) 
               Upload a photo and download a poster for LinkedIn or Instagram. Your photo stays on
               your device.
             </p>
-            <SocialImageGenerator attendeeName={attendeeName} organisation={organisation} embedded />
+            <SocialImageGenerator
+              attendeeName={attendeeName}
+              organisation={organisation}
+              embedded
+            />
           </div>
         ) : null}
       </div>
