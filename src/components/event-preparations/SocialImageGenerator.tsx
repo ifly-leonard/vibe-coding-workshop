@@ -417,6 +417,8 @@ function drawHostAvatarStack(
   return x + size + (images.length - 1) * (size - overlap);
 }
 
+const STORY_SAFE_MARGIN = 10;
+
 async function drawSocialImage(
   canvas: HTMLCanvasElement,
   format: Format,
@@ -435,8 +437,12 @@ async function drawSocialImage(
   const hostImages = await loadHostImages();
 
   const isStory = format === "instagram";
+  const storyMargin = isStory ? STORY_SAFE_MARGIN : 0;
   const s = isStory ? 1.08 : 1;
   const pad = Math.round(72 * s);
+  const contentX = pad + storyMargin;
+  const contentTop = pad + storyMargin;
+  const contentBottom = pad + storyMargin;
   const contentW = Math.round(width * 0.56);
   const displayName = attendeeName.trim();
   const company = organisation.trim();
@@ -477,7 +483,7 @@ async function drawSocialImage(
 
   const titleHeight = titleTwoLine ? Math.round(titleSize * 2.15) : Math.round(titleSize * 1.15);
 
-  const attendeeTextW = attendeeTextMaxWidth(width, height, s, pad);
+  const attendeeTextW = attendeeTextMaxWidth(width, height, s, contentX);
   const companyLineHeight = Math.round(companySize * 1.28);
 
   const {
@@ -494,7 +500,7 @@ async function drawSocialImage(
     companyLines.length > 0 ? spacing(s, "sm") + companyLines.length * companyLineHeight : 0;
   const attendeeBlockHeight = nameBlockHeight + companyBlockHeight;
 
-  let y = pad;
+  let y = contentTop;
 
   const labelTop = y;
   y += labelSize + spacing(s, "md");
@@ -505,7 +511,7 @@ async function drawSocialImage(
   const hostsTop = y;
   const topBottom = hostsTop + hostAvatarSize;
 
-  const hashtagsTop = height - pad - Math.round(hashtagSize * 1.15);
+  const hashtagsTop = height - contentBottom - Math.round(hashtagSize * 1.15);
   const locationTop = hashtagsTop - spacing(s, "sm") - Math.round(locationSize * 1.15);
   const dateTop = locationTop - spacing(s, "sm") - Math.round(dateSize * 1.15);
 
@@ -530,11 +536,11 @@ async function drawSocialImage(
 
   ctx.fillStyle = C.accent;
   ctx.font = `700 ${labelSize}px "Inter Tight", system-ui, sans-serif`;
-  ctx.fillText("I'm attending", pad, labelTop);
+  ctx.fillText("I'm attending", contentX, labelTop);
 
   ctx.font = `800 ${titleSize}px "Bricolage Grotesque", system-ui, sans-serif`;
   if (!titleTwoLine) {
-    let titleX = pad;
+    let titleX = contentX;
     ctx.fillStyle = C.ink;
     ctx.fillText("AI Vibe Coding: The ", titleX, titleTop);
     titleX += ctx.measureText("AI Vibe Coding: The ").width;
@@ -545,9 +551,9 @@ async function drawSocialImage(
     ctx.fillText(" Way", titleX, titleTop);
   } else {
     ctx.fillStyle = C.ink;
-    ctx.fillText("AI Vibe Coding:", pad, titleTop);
+    ctx.fillText("AI Vibe Coding:", contentX, titleTop);
     const titleLine2Top = titleTop + Math.round(titleSize * 1.05);
-    let titleX = pad;
+    let titleX = contentX;
     ctx.fillText("The ", titleX, titleLine2Top);
     titleX += ctx.measureText("The ").width;
     ctx.fillStyle = C.accent;
@@ -559,7 +565,7 @@ async function drawSocialImage(
 
   const hostsEndX = drawHostAvatarStack(
     ctx,
-    pad,
+    contentX,
     hostsTop,
     hostAvatarSize,
     hostOverlap,
@@ -573,30 +579,30 @@ async function drawSocialImage(
   ctx.fillStyle = C.ink;
   ctx.font = `800 ${nameSize}px "Bricolage Grotesque", system-ui, sans-serif`;
   nameLines.forEach((line, index) => {
-    ctx.fillText(line, pad, nameTop + index * nameLineHeight);
+    ctx.fillText(line, contentX, nameTop + index * nameLineHeight);
   });
 
   if (companyTop !== null) {
     ctx.fillStyle = C.muted;
     ctx.font = `600 ${companySize}px "Inter Tight", system-ui, sans-serif`;
     companyLines.forEach((line, index) => {
-      ctx.fillText(line, pad, companyTop + index * companyLineHeight);
+      ctx.fillText(line, contentX, companyTop + index * companyLineHeight);
     });
   }
 
   ctx.fillStyle = C.ink;
   ctx.font = `700 ${dateSize}px "Bricolage Grotesque", system-ui, sans-serif`;
-  ctx.fillText("27th June 2026", pad, dateTop);
+  ctx.fillText("27th June 2026", contentX, dateTop);
 
   ctx.fillStyle = C.muted;
   ctx.font = `600 ${locationSize}px "Inter Tight", system-ui, sans-serif`;
-  ctx.fillText("Paperflite, Chennai", pad, locationTop);
+  ctx.fillText("Paperflite, Chennai", contentX, locationTop);
 
   ctx.save();
   ctx.globalAlpha = 0.48;
   ctx.fillStyle = C.accent;
   ctx.font = `700 ${hashtagSize}px "Inter Tight", system-ui, sans-serif`;
-  ctx.fillText("#builder #ai #vibe", pad, hashtagsTop);
+  ctx.fillText("#builder #ai #vibe", contentX, hashtagsTop);
   ctx.restore();
 }
 
