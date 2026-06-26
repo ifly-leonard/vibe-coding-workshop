@@ -16,6 +16,9 @@ tsconfig.tsbuildinfo
 !.env.example
 *.local
 
+# Attendee roster (use data/attendees.example.csv as template)
+data/attendees.csv
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars

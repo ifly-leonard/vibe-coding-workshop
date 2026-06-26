@@ -16,6 +16,7 @@
  *   json: {
  *     paymentId,
  *     confirmationCode: encodeBookingCode(paymentId),
+ *     attendeeId: $json.attendeeId ?? crypto.randomUUID(),
  *     customerName: $json.customerName ?? $json.name ?? '',
  *     customerEmail: $json.customerEmail ?? $json.email ?? '',
  *   },

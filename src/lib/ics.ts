@@ -1,4 +1,4 @@
-import { WORKSHOP_EVENT } from "./event.constants";
+import { EVENT_PREPARATION, WORKSHOP_EVENT } from "./event.constants";
 
 function formatIcsUtc(date: Date) {
   return date
@@ -15,12 +15,21 @@ function escapeIcsText(value: string) {
     .replace(/;/g, "\\;");
 }
 
+function buildPreparationDescriptionLines() {
+  return [
+    `Arrive by: ${EVENT_PREPARATION.arriveBy}`,
+    `Parking: ${EVENT_PREPARATION.parking}`,
+    `Bring: ${EVENT_PREPARATION.bring.join("; ")}`,
+  ];
+}
+
 export function buildWorkshopIcsContent(options?: { attendeeName?: string; referenceId?: string }) {
   const start = new Date(WORKSHOP_EVENT.startIso);
   const end = new Date(WORKSHOP_EVENT.endIso);
   const uid = `vibe-coding-workshop-2026-${options?.referenceId ?? "registration"}@vibeproductlab`;
   const description = [
     WORKSHOP_EVENT.description,
+    ...buildPreparationDescriptionLines(),
     options?.attendeeName ? `Registered by: ${options.attendeeName}` : null,
     options?.referenceId ? `Reference: ${options.referenceId}` : null,
   ]

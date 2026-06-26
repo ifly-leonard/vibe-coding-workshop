@@ -4,7 +4,8 @@
   Expected JSON fields (from a prior Code / Set node):
     • paymentId          e.g. pay_T3T71lKyq5U0YQ
     • confirmationCode   generated via templates/n8n-booking-code.js
-    • customerName       optional — first name for greeting
+    • customerName       attendee name for event-prep link (?name=)
+    • organisation       company / org for event-prep link (?organisation=)
 
   Razorpay webhooks often expose the ID as `payload.payment.entity.id`.
   Map it to paymentId before this step.
@@ -417,6 +418,80 @@
                           </td>
                         </tr>
                       </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Event preparations -->
+            <tr>
+              <td class="pad" style="padding: 28px 32px 0 32px; text-align: center">
+                <table
+                  role="presentation"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  width="100%"
+                  style="
+                    background-color: #2d2a26;
+                    border-radius: 16px;
+                  "
+                >
+                  <tr>
+                    <td style="padding: 28px 24px; text-align: center">
+                      <p
+                        style="
+                          margin: 0 0 8px 0;
+                          font-family: 'Inter Tight', system-ui, -apple-system, sans-serif;
+                          font-size: 11px;
+                          font-weight: 600;
+                          letter-spacing: 0.12em;
+                          text-transform: uppercase;
+                          color: #cf4f2e;
+                        "
+                      >
+                        Your event prep page
+                      </p>
+                      <p
+                        style="
+                          margin: 0 0 16px 0;
+                          font-family: 'Bricolage Grotesque', Georgia, serif;
+                          font-size: 22px;
+                          font-weight: 800;
+                          line-height: 1.3;
+                          color: #faf8f4;
+                        "
+                      >
+                        Checklist, calendar file &amp; share image
+                      </p>
+                      <p
+                        style="
+                          margin: 0 0 20px 0;
+                          font-family: 'Inter Tight', system-ui, -apple-system, sans-serif;
+                          font-size: 14px;
+                          line-height: 1.55;
+                          color: #c8c2ba;
+                        "
+                      >
+                        Your name is already on the page. Upload a photo in your browser to create a
+                        LinkedIn or Instagram image — nothing is uploaded to our servers.
+                      </p>
+                      <a
+                        href="https://yoursite.com/event-preparations?name={{ encodeURIComponent($json.customerName) }}&organisation={{ encodeURIComponent($json.organisation) }}"
+                        style="
+                          display: inline-block;
+                          padding: 14px 28px;
+                          font-family: 'Inter Tight', system-ui, -apple-system, sans-serif;
+                          font-size: 15px;
+                          font-weight: 700;
+                          color: #2d2a26;
+                          background-color: #faf8f4;
+                          border-radius: 999px;
+                          text-decoration: none;
+                        "
+                        >Open your prep page &rarr;</a
+                      >
                     </td>
                   </tr>
                 </table>
