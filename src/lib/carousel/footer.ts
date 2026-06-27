@@ -64,10 +64,7 @@ export function heroAvatarTextMaxWidth(width: number, height: number, pad: numbe
   const radius = bgSize(280, width, height);
   const ring = Math.max(8, bgSize(6, width, height));
   const gap = Math.round(28 * (width / 1080));
-  return Math.max(
-    Math.round(width * 0.42),
-    Math.round(cx - radius - ring - pad - gap),
-  );
+  return Math.max(Math.round(width * 0.42), Math.round(cx - radius - ring - pad - gap));
 }
 
 export function drawProfileAvatar(

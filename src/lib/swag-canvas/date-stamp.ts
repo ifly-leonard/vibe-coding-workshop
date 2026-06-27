@@ -56,11 +56,7 @@ export function drawDateStamp(
 
   const monthSize = Math.round(width * 0.11);
   ctx.font = `700 ${monthSize}px "Bricolage Grotesque", system-ui, sans-serif`;
-  ctx.fillText(
-    copy.month,
-    x + width / 2,
-    y + pad + labelSize + daySize + Math.round(width * 0.02),
-  );
+  ctx.fillText(copy.month, x + width / 2, y + pad + labelSize + daySize + Math.round(width * 0.02));
 
   const dividerY = y + height - pad - Math.round(width * 0.12);
   ctx.strokeStyle = "oklch(0.18 0.008 60 / 12%)";

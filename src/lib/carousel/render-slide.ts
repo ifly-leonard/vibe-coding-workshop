@@ -1,4 +1,10 @@
-import { contentAreaHeight, drawHeroProfileAvatar, drawProfileAvatar, drawSlideFooter, heroAvatarTextMaxWidth } from "@/lib/carousel/footer";
+import {
+  contentAreaHeight,
+  drawHeroProfileAvatar,
+  drawProfileAvatar,
+  drawSlideFooter,
+  heroAvatarTextMaxWidth,
+} from "@/lib/carousel/footer";
 import { CAROUSEL_HASHTAGS } from "@/lib/carousel/share";
 import {
   CAROUSEL_COPY,

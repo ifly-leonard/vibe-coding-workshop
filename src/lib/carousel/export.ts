@@ -34,12 +34,7 @@ export async function exportCarouselPdf(
 ) {
   const brandingLogo = await loadBrandingLogo();
   const visibleSlides = getVisibleSlides(slides);
-  const canvases = await renderAllCarouselSlides(
-    visibleSlides,
-    brandingLogo,
-    profile,
-    accentColor,
-  );
+  const canvases = await renderAllCarouselSlides(visibleSlides, brandingLogo, profile, accentColor);
   const { jsPDF } = await import("jspdf");
 
   const pdf = new jsPDF({
@@ -63,12 +58,7 @@ export async function exportCarouselZip(
 ) {
   const brandingLogo = await loadBrandingLogo();
   const visibleSlides = getVisibleSlides(slides);
-  const canvases = await renderAllCarouselSlides(
-    visibleSlides,
-    brandingLogo,
-    profile,
-    accentColor,
-  );
+  const canvases = await renderAllCarouselSlides(visibleSlides, brandingLogo, profile, accentColor);
   const JSZip = (await import("jszip")).default;
   const zip = new JSZip();
 

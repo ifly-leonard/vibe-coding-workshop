@@ -52,7 +52,15 @@ export function drawSingleInstructorAvatar(
   borderColor = "#F7EFE3",
 ) {
   const radius = size / 2;
-  drawInstructorAvatar(ctx, x + radius, y + radius, radius, image, borderColor, Math.max(3, size * 0.07));
+  drawInstructorAvatar(
+    ctx,
+    x + radius,
+    y + radius,
+    radius,
+    image,
+    borderColor,
+    Math.max(3, size * 0.07),
+  );
   return size;
 }
 

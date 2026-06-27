@@ -40,9 +40,7 @@ function rgbToHex(r: number, g: number, b: number) {
 function relativeLuminance(r: number, g: number, b: number) {
   const channel = (value: number) => {
     const normalized = value / 255;
-    return normalized <= 0.03928
-      ? normalized / 12.92
-      : ((normalized + 0.055) / 1.055) ** 2.4;
+    return normalized <= 0.03928 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4;
   };
 
   return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);

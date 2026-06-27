@@ -63,7 +63,13 @@ export function drawPolaroid(
     const cover = Math.max(photoW / photo.width, photoH / photo.height);
     const drawW = photo.width * cover;
     const drawH = photo.height * cover;
-    ctx.drawImage(photo, photoX + (photoW - drawW) / 2, photoY + (photoH - drawH) / 2, drawW, drawH);
+    ctx.drawImage(
+      photo,
+      photoX + (photoW - drawW) / 2,
+      photoY + (photoH - drawH) / 2,
+      drawW,
+      drawH,
+    );
   } else {
     ctx.fillStyle = C.cream;
     ctx.fillRect(photoX, photoY, photoW, photoH);

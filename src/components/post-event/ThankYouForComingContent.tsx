@@ -92,7 +92,6 @@ function PolaroidPhoto({ src, alt, tilt }: { src: string; alt: string; tilt: num
     >
       <div className="bg-white p-2.5 pb-9 shadow-[0_12px_32px_oklch(0.18_0.008_60/0.14)] ring-1 ring-[color:var(--border)]">
         <div className="aspect-[4/5] w-36 overflow-hidden bg-[color:var(--bg-section)] sm:w-40">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={src} alt={alt} className="h-full w-full object-cover" loading="lazy" />
         </div>
       </div>
