@@ -522,6 +522,67 @@
     }
   }
 
+  .carousel-use-ai-btn {
+    border: 1.5px solid oklch(0.58 0.2 32 / 0.4);
+    background: oklch(0.58 0.2 32 / 0.07);
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.15s ease;
+    animation: carousel-ai-breathe 3s ease-in-out infinite;
+  }
+
+  .carousel-use-ai-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 42%,
+      oklch(1 0 0 / 0.35) 50%,
+      transparent 58%
+    );
+    transform: translateX(-130%);
+    animation: carousel-ai-shine 3.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .carousel-use-ai-btn:hover {
+    background: oklch(0.58 0.2 32 / 0.11);
+    border-color: oklch(0.58 0.2 32 / 0.65);
+  }
+
+  .carousel-use-ai-btn:active {
+    transform: scale(0.99);
+  }
+
+  @keyframes carousel-ai-breathe {
+    0%,
+    100% {
+      border-color: oklch(0.58 0.2 32 / 0.35);
+      box-shadow: 0 0 0 0 oklch(0.58 0.2 32 / 0);
+    }
+    50% {
+      border-color: oklch(0.58 0.2 32 / 0.72);
+      box-shadow: 0 0 18px oklch(0.58 0.2 32 / 0.14);
+    }
+  }
+
+  @keyframes carousel-ai-shine {
+    0%,
+    72%,
+    100% {
+      transform: translateX(-130%);
+    }
+    38% {
+      transform: translateX(130%);
+    }
+  }
+
+  .font-handwriting {
+    font-family: var(--font-handwriting), "Caveat", cursive;
+  }
+
   /* Paper texture overlay */
   .paper-grain {
     position: fixed;

@@ -108,6 +108,16 @@ export function PrepHeroCard({ attendeeName, organisation }: PrepHeroCardProps) 
               organisation={organisation}
               embedded
             />
+            <p className="mt-5 text-sm text-[color:var(--text-muted)]">
+              Need a multi-slide carousel?{" "}
+              <a
+                href="/thank-you-for-coming"
+                className="font-semibold text-[color:var(--accent-vermillion)] underline-offset-2 hover:underline"
+              >
+                Open the carousel generator
+              </a>
+              .
+            </p>
           </div>
         ) : null}
       </div>

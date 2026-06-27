@@ -7,6 +7,17 @@ import hameedPhoto from "@/assets/hameed.jpeg";
 import hariPhoto from "@/assets/hari.png";
 import leoPhoto from "@/assets/leo.jpeg";
 import { Reveal } from "@/components/landing/motion";
+import {
+  SWAG_COLORS as C,
+  bgSize,
+  bgX,
+  drawPremiumBackground,
+  ensureSwagFonts,
+  fitWrappedName,
+  loadImage,
+  spacing,
+  wrapText,
+} from "@/lib/swag-canvas";
 
 type Format = "linkedin" | "instagram";
 
@@ -17,171 +28,7 @@ const FORMATS: Record<Format, { label: string; width: number; height: number }> 
   instagram: { label: "Instagram story", width: 1080, height: 1920 },
 };
 
-const C = {
-  page: "#F7EFE3",
-  cream: "#FFF7EB",
-  ink: "#1c1917",
-  muted: "#6b6560",
-  soft: "#8a847c",
-  accent: "#F45118",
-};
-
-const BG_REF = 1080;
-
-function bgX(x: number, width: number) {
-  return (x / BG_REF) * width;
-}
-
-function bgY(y: number, height: number) {
-  return (y / BG_REF) * height;
-}
-
-function bgSize(size: number, width: number, height: number) {
-  return size * (Math.min(width, height) / BG_REF);
-}
-
-function drawSoftSphere(
-  ctx: CanvasRenderingContext2D,
-  cx: number,
-  cy: number,
-  radius: number,
-  stops: [number, string][],
-  blur: number,
-  opacity: number,
-) {
-  ctx.save();
-  ctx.filter = `blur(${blur}px)`;
-  ctx.globalAlpha = opacity;
-  const grad = ctx.createRadialGradient(cx - radius * 0.12, cy, 0, cx, cy, radius);
-  for (const [offset, color] of stops) {
-    grad.addColorStop(offset, color);
-  }
-  ctx.fillStyle = grad;
-  ctx.beginPath();
-  ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.restore();
-}
-
-function drawPremiumBackground(ctx: CanvasRenderingContext2D, width: number, height: number) {
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0, 0, width, height);
-
-  const baseGrad = ctx.createRadialGradient(
-    bgX(380, width),
-    bgY(540, height),
-    0,
-    bgX(380, width),
-    bgY(540, height),
-    bgSize(700, width, height),
-  );
-  baseGrad.addColorStop(0, "rgba(255, 250, 240, 0.9)");
-  baseGrad.addColorStop(1, "rgba(244, 226, 204, 0.35)");
-  ctx.fillStyle = baseGrad;
-  ctx.fillRect(0, 0, width, height);
-
-  drawSoftSphere(
-    ctx,
-    bgX(850, width),
-    bgY(500, height),
-    bgSize(500, width, height),
-    [
-      [0, "rgba(255, 226, 177, 0.45)"],
-      [0.55, "rgba(255, 167, 72, 0.50)"],
-      [1, "rgba(244, 82, 24, 0.75)"],
-    ],
-    bgSize(200, width, height),
-    0.85,
-  );
-
-  // drawSoftSphere(
-  //   ctx,
-  //   bgX(600, width),
-  //   bgY(209, height),
-  //   bgSize(100, width, height),
-  //   [
-  //     [0, "rgba(255, 226, 177, 0.45)"],
-  //     [0.55, "rgba(255, 167, 72, 0.50)"],
-  //     [1, "rgba(244, 82, 24, 0.75)"],
-  //   ],
-  //   bgSize(100, width, height),
-  //   0.85,
-  // );
-
-  const mainCx = bgX(850, width);
-  const mainCy = bgY(760, height);
-  const mainR = bgSize(365, width, height);
-  ctx.save();
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.55)";
-  ctx.lineWidth = bgSize(1.5, width, height);
-  ctx.filter = `blur(${bgSize(2, width, height)}px)`;
-  ctx.beginPath();
-  ctx.arc(mainCx, mainCy, mainR * 0.92, Math.PI * 1.08, Math.PI * 1.62);
-  ctx.stroke();
-  ctx.restore();
-
-  // drawSoftSphere(
-  //   ctx,
-  //   bgX(1080, width),
-  //   bgY(220, height),
-  //   bgSize(195, width, height),
-  //   [
-  //     [0, "rgba(245, 78, 20, 0.75)"],
-  //     [0.5, "rgba(255, 135, 48, 0.45)"],
-  //     [1, "rgba(255, 230, 205, 0.05)"],
-  //   ],
-  //   bgSize(36, width, height),
-  //   0.8,
-  // );
-
-  const arcCx = bgX(120, width);
-  const arcCy = height + bgSize(40, width, height);
-  const arcRadii = [230, 280, 340];
-  ctx.save();
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.35)";
-  ctx.lineWidth = bgSize(1, width, height);
-  for (const r of arcRadii) {
-    const radius = bgSize(r, width, height);
-    ctx.beginPath();
-    ctx.arc(arcCx, arcCy, radius, Math.PI * 1.05, Math.PI * 1.55);
-    ctx.stroke();
-  }
-  ctx.restore();
-
-  const gridX = bgX(995, width);
-  const gridY = bgY(405, height);
-  const dotSize = bgSize(4, width, height);
-  const dotGap = bgSize(14, width, height);
-  ctx.save();
-  ctx.globalAlpha = 0.5;
-  ctx.fillStyle = "rgba(255, 255, 255, 0.35)";
-  for (let row = 0; row < 6; row += 1) {
-    for (let col = 0; col < 5; col += 1) {
-      const fade = 1 - col * 0.08 - row * 0.03;
-      ctx.globalAlpha = Math.max(0.2, 0.5 * fade);
-      ctx.beginPath();
-      ctx.arc(gridX + col * dotGap, gridY + row * dotGap, dotSize / 2, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-  ctx.restore();
-
-  const pattern = getNoisePattern(ctx);
-  if (pattern) {
-    ctx.save();
-    ctx.globalAlpha = 0.095;
-    ctx.globalCompositeOperation = "multiply";
-    ctx.fillStyle = pattern;
-    ctx.fillRect(0, 0, width, height);
-    ctx.restore();
-    ctx.save();
-    ctx.globalAlpha = 0.035;
-    ctx.globalCompositeOperation = "overlay";
-    ctx.fillStyle = pattern;
-    ctx.fillRect(0, 0, width, height);
-    ctx.restore();
-  }
-}
+const STORY_SAFE_MARGIN = 10;
 
 type SocialImageGeneratorProps = {
   attendeeName: string;
@@ -199,52 +46,6 @@ async function loadHostImages() {
 
 function getFirstName(name: string) {
   return name.trim().split(/\s+/)[0] ?? name;
-}
-
-async function loadImage(src: string): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const image = new Image();
-    image.crossOrigin = "anonymous";
-    image.onload = () => resolve(image);
-    image.onerror = reject;
-    image.src = src;
-  });
-}
-
-async function ensureFonts() {
-  await Promise.all([
-    document.fonts.load('800 140px "Bricolage Grotesque"'),
-    document.fonts.load('800 96px "Bricolage Grotesque"'),
-    document.fonts.load('700 52px "Bricolage Grotesque"'),
-    document.fonts.load('700 36px "Inter Tight"'),
-    document.fonts.load('600 30px "Inter Tight"'),
-    document.fonts.load('700 22px "Inter Tight"'),
-  ]);
-}
-
-let noisePatternCache: CanvasPattern | null = null;
-
-function getNoisePattern(ctx: CanvasRenderingContext2D) {
-  if (noisePatternCache) return noisePatternCache;
-
-  const size = 200;
-  const off = document.createElement("canvas");
-  off.width = size;
-  off.height = size;
-  const octx = off.getContext("2d");
-  if (!octx) return null;
-
-  const imageData = octx.createImageData(size, size);
-  for (let i = 0; i < imageData.data.length; i += 4) {
-    const grain = 128 + Math.random() * 12 - 6;
-    imageData.data[i] = grain;
-    imageData.data[i + 1] = grain;
-    imageData.data[i + 2] = grain;
-    imageData.data[i + 3] = 255;
-  }
-  octx.putImageData(imageData, 0, 0);
-  noisePatternCache = ctx.createPattern(off, "repeat");
-  return noisePatternCache;
 }
 
 function drawAvatarUserIcon(ctx: CanvasRenderingContext2D, cx: number, cy: number, size: number) {
@@ -303,38 +104,6 @@ function drawAvatarCircle(
   ctx.restore();
 }
 
-function fitWrappedName(
-  ctx: CanvasRenderingContext2D,
-  name: string,
-  maxWidth: number,
-  maxSize: number,
-  minSize: number,
-) {
-  const lineHeightFactor = 1.12;
-
-  for (let size = maxSize; size >= minSize; size -= 2) {
-    ctx.font = `800 ${size}px "Bricolage Grotesque", system-ui, sans-serif`;
-    const lineHeight = Math.round(size * lineHeightFactor);
-
-    if (ctx.measureText(name).width <= maxWidth) {
-      return { size, lines: [name], lineHeight };
-    }
-
-    const lines = wrapText(ctx, name, maxWidth);
-    const allFit = lines.every((line) => ctx.measureText(line).width <= maxWidth);
-    if (allFit && lines.length > 0) {
-      return { size, lines, lineHeight };
-    }
-  }
-
-  ctx.font = `800 ${minSize}px "Bricolage Grotesque", system-ui, sans-serif`;
-  return {
-    size: minSize,
-    lines: wrapText(ctx, name, maxWidth),
-    lineHeight: Math.round(minSize * lineHeightFactor),
-  };
-}
-
 function attendeeTextMaxWidth(width: number, height: number, scale: number, pad: number) {
   const avatarCx = bgX(950, width);
   const avatarRadius = bgSize(300, width, height) * scale;
@@ -344,32 +113,6 @@ function attendeeTextMaxWidth(width: number, height: number, scale: number, pad:
     Math.round(width * 0.42),
     Math.round(avatarCx - avatarRadius - avatarRing - pad - gap),
   );
-}
-
-function spacing(scale: number, size: "sm" | "md" | "lg" | "xl") {
-  const base = { sm: 16, md: 28, lg: 48, xl: 64 };
-  return Math.round(base[size] * scale);
-}
-
-function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
-  const words = text.split(/\s+/).filter(Boolean);
-  if (words.length === 0) return [];
-
-  const lines: string[] = [];
-  let line = words[0] ?? "";
-
-  for (let i = 1; i < words.length; i += 1) {
-    const next = `${line} ${words[i]}`;
-    if (ctx.measureText(next).width <= maxWidth) {
-      line = next;
-    } else {
-      lines.push(line);
-      line = words[i] ?? "";
-    }
-  }
-
-  lines.push(line);
-  return lines;
 }
 
 function drawHostAvatar(
@@ -417,8 +160,6 @@ function drawHostAvatarStack(
   return x + size + (images.length - 1) * (size - overlap);
 }
 
-const STORY_SAFE_MARGIN = 10;
-
 async function drawSocialImage(
   canvas: HTMLCanvasElement,
   format: Format,
@@ -433,7 +174,7 @@ async function drawSocialImage(
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
-  await ensureFonts();
+  await ensureSwagFonts();
   const hostImages = await loadHostImages();
 
   const isStory = format === "instagram";

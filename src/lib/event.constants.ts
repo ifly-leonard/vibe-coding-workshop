@@ -9,6 +9,7 @@ export const WORKSHOP_EVENT = {
   endIso: "2026-06-27T18:00:00+05:30",
   displayWhen: "27 June 2026 · Saturday · 2:00 PM – 6:00 PM IST",
   displayWhere: "Paperflite, 383, 1st Cross St, Nehru Nagar, Perungudi, Chennai, Tamil Nadu 600041",
+  siteUrl: "vibecoding.chennai",
 } as const;
 
 export const EVENT_PREPARATION = {
