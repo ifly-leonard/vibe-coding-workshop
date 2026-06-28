@@ -53,6 +53,7 @@ import { loadBrandingLogo, loadImage, ACCENT_PRESETS, DEFAULT_ACCENT } from "@/l
 
 const THUMB_SIZE = 72;
 const MAIN_PREVIEW_MAX = 420;
+const CAROUSEL_DEMO_VIDEO_PATH = "/demo.mp4";
 
 type LeftTabId = "branding" | "content" | "generate";
 
@@ -537,6 +538,22 @@ export function CarouselGenerator({
           <p className="mt-1 text-xs text-[color:var(--text-muted)]">
             Edit on the left. Preview every slide on the right.
           </p>
+          <div className="mt-4">
+            <p className="text-xs font-semibold uppercase tracking-wide text-[color:var(--text-soft)]">
+              How it works
+            </p>
+            <div className="mt-2 overflow-hidden rounded-xl border border-[color:var(--border)] bg-[color:var(--bg-section)]">
+              <video
+                src={CAROUSEL_DEMO_VIDEO_PATH}
+                controls
+                playsInline
+                preload="metadata"
+                className="aspect-video w-full bg-black object-contain"
+              >
+                Your browser does not support video playback.
+              </video>
+            </div>
+          </div>
         </div>
 
         <div

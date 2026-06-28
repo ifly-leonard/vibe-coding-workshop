@@ -2,7 +2,6 @@ import {
   Award,
   BookOpen,
   ExternalLink,
-  FolderOpen,
   KeyRound,
   MessageSquareHeart,
   MessageSquareShare,
@@ -23,7 +22,6 @@ import {
 const POLAROID_TILTS = [-5, 3.5, -2.5, 4, -3, 2, -4, 2.5, -1.5, 3, -2, 4.5];
 
 const LINK_ICONS: Record<string, typeof ExternalLink> = {
-  "Workshop photos": FolderOpen,
   "Share feedback": MessageSquareHeart,
   "Certificate verification": Award,
   "Workshop prompts": KeyRound,
@@ -42,8 +40,23 @@ function ImportantLinkCard({ link }: { link: ThankYouLink }) {
       rel="noopener noreferrer"
       className="group flex w-[min(100%,16rem)] shrink-0 items-center gap-3 rounded-xl border border-[color:var(--border)] bg-[color:var(--bg-section)] px-4 py-3.5 transition hover:border-[color:var(--accent-vermillion)]/40 hover:bg-[color:var(--bg-card)] sm:w-56"
     >
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[color:var(--accent-vermillion)]/10 text-[color:var(--accent-vermillion)]">
-        <Icon className="h-5 w-5" aria-hidden />
+      <span
+        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
+          link.iconSrc
+            ? "bg-white ring-1 ring-[color:var(--border)]"
+            : "bg-[color:var(--accent-vermillion)]/10 text-[color:var(--accent-vermillion)]"
+        }`}
+      >
+        {link.iconSrc ? (
+          <img
+            src={link.iconSrc}
+            alt={link.iconAlt ?? ""}
+            className="h-6 w-6 object-contain"
+            loading="lazy"
+          />
+        ) : (
+          <Icon className="h-5 w-5" aria-hidden />
+        )}
       </span>
       <span className="min-w-0 flex-1">
         <span className="block text-sm font-semibold text-[color:var(--text-main)]">

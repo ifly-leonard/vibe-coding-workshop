@@ -80,7 +80,7 @@ export function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden pt-28 pb-20 md:pt-36 md:pb-28 lg:pt-44 lg:pb-32">
+    <section className="relative overflow-hidden pt-36 pb-20 md:pt-44 md:pb-28 lg:pt-52 lg:pb-32">
       <div className="vc-container relative">
         <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
           {/* Left: content */}

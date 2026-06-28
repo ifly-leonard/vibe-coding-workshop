@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Menu, X } from "lucide-react";
 
@@ -35,39 +36,57 @@ export function Nav() {
 
   return (
     <>
-      <motion.header
+      <motion.div
         initial={reduce ? false : { y: -80 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "border-b border-[color:var(--border)] bg-[color:var(--bg-main)]/85 backdrop-blur-xl"
-            : "border-b border-transparent bg-transparent"
-        }`}
+        className="fixed top-0 left-0 right-0 z-50"
       >
-        <div className="vc-container flex h-16 items-center justify-between gap-4">
-          <nav className="hidden flex-1 items-center justify-center gap-8 md:flex">
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="link-underline text-sm font-medium text-[color:var(--text-muted)] transition-colors hover:text-[color:var(--text-main)]"
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
-
-          <button
-            type="button"
-            onClick={() => setMobileOpen(true)}
-            className="ml-auto flex h-10 w-10 items-center justify-center rounded-lg border border-[color:var(--border)] text-[color:var(--text-main)] transition-colors hover:bg-[color:var(--bg-section)] md:hidden"
-            aria-label="Open menu"
-          >
-            <Menu className="h-5 w-5" />
-          </button>
+        <div className="border-b border-[color:var(--accent-vermillion)]/25 bg-[color:var(--accent-vermillion)] text-[color:var(--bg-card)]">
+          <div className="vc-container flex flex-col items-center justify-center gap-2 px-4 py-2.5 sm:flex-row sm:justify-between sm:gap-4">
+            <p className="text-center text-sm font-medium sm:text-left">
+              This event is over — thank you to everyone who joined us in Chennai.
+            </p>
+            <Link
+              href="/thank-you-for-coming"
+              className="shrink-0 rounded-full bg-[color:var(--bg-card)] px-4 py-1.5 text-xs font-bold tracking-wide text-[color:var(--accent-vermillion)] transition hover:opacity-90"
+            >
+              View thank-you page
+            </Link>
+          </div>
         </div>
-      </motion.header>
+
+        <header
+          className={`transition-all duration-300 ${
+            scrolled
+              ? "border-b border-[color:var(--border)] bg-[color:var(--bg-main)]/85 backdrop-blur-xl"
+              : "border-b border-transparent bg-transparent"
+          }`}
+        >
+          <div className="vc-container flex h-16 items-center justify-between gap-4">
+            <nav className="hidden flex-1 items-center justify-center gap-8 md:flex">
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="link-underline text-sm font-medium text-[color:var(--text-muted)] transition-colors hover:text-[color:var(--text-main)]"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+
+            <button
+              type="button"
+              onClick={() => setMobileOpen(true)}
+              className="ml-auto flex h-10 w-10 items-center justify-center rounded-lg border border-[color:var(--border)] text-[color:var(--text-main)] transition-colors hover:bg-[color:var(--bg-section)] md:hidden"
+              aria-label="Open menu"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+          </div>
+        </header>
+      </motion.div>
 
       <AnimatePresence>
         {mobileOpen && (

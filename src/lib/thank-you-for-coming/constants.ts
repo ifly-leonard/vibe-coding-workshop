@@ -1,5 +1,5 @@
 export const THANK_YOU_GOOGLE_DRIVE_URL =
-  "https://drive.google.com/drive/folders/placeholder-workshop-photos";
+  "https://drive.google.com/drive/folders/1HHZUFpeIvx6qYUljZdVOYayRhpVfQXDr";
 
 export const THANK_YOU_FEEDBACK_URL = "https://forms.gle/placeholder-feedback";
 
@@ -119,6 +119,8 @@ export type ThankYouLink = {
   label: string;
   description: string;
   href: string;
+  iconSrc?: string;
+  iconAlt?: string;
 };
 
 /** Swap href values when final URLs are confirmed. */
@@ -127,6 +129,8 @@ export const THANK_YOU_IMPORTANT_LINKS: ThankYouLink[] = [
     label: "Workshop photos",
     description: "Google Drive",
     href: THANK_YOU_GOOGLE_DRIVE_URL,
+    iconSrc: "/icons/google-drive.svg",
+    iconAlt: "Google Drive",
   },
   {
     label: "Share feedback",
