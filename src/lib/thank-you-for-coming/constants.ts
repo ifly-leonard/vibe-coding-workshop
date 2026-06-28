@@ -1,10 +1,3 @@
-import loc1 from "@/assets/location/loc-1.jpeg";
-import loc2 from "@/assets/location/loc-2.jpeg";
-import loc3 from "@/assets/location/loc-3.jpeg";
-import loc4 from "@/assets/location/loc-4.jpeg";
-import loc5 from "@/assets/location/loc-5.jpeg";
-import loc6 from "@/assets/location/loc-6.jpeg";
-
 export const THANK_YOU_GOOGLE_DRIVE_URL =
   "https://drive.google.com/drive/folders/placeholder-workshop-photos";
 
@@ -89,14 +82,36 @@ export type ThankYouFaqItem = {
 
 export const THANK_YOU_FAQ_ITEMS: ThankYouFaqItem[] = [
   {
-    question: "When is the next event?",
+    question: "When will I get the photos?",
     answer:
-      "Soon — we're lining up the next Chennai edition now. Join the community link above to hear about it first.",
+      "They're in the Important links section above. Download your images ASAP — the link will be decommissioned after some time.",
   },
   {
-    question: "Can I get more Lovable credits?",
+    question: "How do I activate my 300 Lovable credits?",
     answer:
-      "Additional Lovable credits are paid only and not included with the workshop. Reach out in the community if you need more.",
+      "Check the email address you used to register for the workshop. You should have received an activation link there.",
+  },
+  {
+    question: "How long are the credits valid?",
+    answer: "One year from the date of activation.",
+  },
+  {
+    question: "I didn't come to the event — can I still get credits?",
+    answer: "Yeppudi bro. Won't be possible.",
+  },
+  {
+    question: "What if I run out of credits?",
+    answer:
+      "You can buy more. AIBN is in the process of becoming an official partner of Lovable — members will get access to credits at a very subsidized rate. Butttt, hopefully you won't run out: the whole session was about optimization.",
+  },
+  {
+    question: "When is the next event?",
+    answer:
+      "When it's happening, we'll post in the AIBN group first before LinkedIn. Join there for exclusive access and early-bird discounts.",
+  },
+  {
+    question: "What if I have doubts?",
+    answer: "Ask on the AIBN group directly.",
   },
 ];
 
@@ -146,12 +161,18 @@ export const THANK_YOU_IMPORTANT_LINKS: ThankYouLink[] = [
 ];
 
 export const FAVORITE_MOMENTS = [
-  { src: loc1.src, alt: "Builders at work during the workshop" },
-  { src: loc2.src, alt: "Hands-on session at Paperflite" },
-  { src: loc3.src, alt: "Group energy in the room" },
-  { src: loc4.src, alt: "Collaborating on product ideas" },
-  { src: loc5.src, alt: "Workshop in full swing" },
-  { src: loc6.src, alt: "Another favorite moment from the day" },
+  { src: "/photos/059A2611.jpg", alt: "Workshop moment at Paperflite" },
+  { src: "/photos/059A2728.jpg", alt: "Builders collaborating during the session" },
+  { src: "/photos/059A2764.jpg", alt: "Hands-on vibe coding in the room" },
+  { src: "/photos/059A2992.jpg", alt: "Attendees focused on their builds" },
+  { src: "/photos/059A3153.jpg", alt: "Energy in the workshop space" },
+  { src: "/photos/059A3167.jpg", alt: "Group working through product ideas" },
+  { src: "/photos/059A3202.jpg", alt: "Instructors and attendees in conversation" },
+  { src: "/photos/059A3257.jpg", alt: "Another favorite moment from the day" },
+  { src: "/photos/059A3259.jpg", alt: "Workshop in full swing" },
+  { src: "/photos/059A3295.jpg", alt: "Builders at work during the workshop" },
+  { src: "/photos/059A3364.jpg", alt: "Collaborating on product ideas" },
+  { src: "/photos/059A3548.jpg", alt: "Snapshots from AI Vibe Coding Chennai" },
 ] as const;
 
 export const INSTRUCTOR_MESSAGE = [

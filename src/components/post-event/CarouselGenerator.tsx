@@ -24,8 +24,7 @@ import { exportCarouselPdf, exportCarouselZip } from "@/lib/carousel/export";
 import {
   CAROUSEL_HASHTAGS,
   CAROUSEL_TAG_ACCOUNTS,
-  carouselHashtagsText,
-  carouselTagAccountsText,
+  carouselShareCopyText,
 } from "@/lib/carousel/share";
 import { renderCarouselSlide } from "@/lib/carousel/render-slide";
 import {
@@ -65,29 +64,6 @@ const LEFT_TABS: { id: LeftTabId; label: string }[] = [
 
 async function copyText(text: string) {
   await navigator.clipboard.writeText(text);
-}
-
-type CopyChipProps = {
-  label: string;
-  copied: boolean;
-  onCopy: () => void;
-};
-
-function CopyChip({ label, copied, onCopy }: CopyChipProps) {
-  return (
-    <button
-      type="button"
-      onClick={onCopy}
-      className="inline-flex items-center gap-2 rounded-lg border border-[color:var(--border)] bg-[color:var(--bg-section)] px-3 py-2 text-sm font-medium text-[color:var(--text-main)] transition hover:border-[color:var(--accent-vermillion)]/40"
-    >
-      <span>{label}</span>
-      {copied ? (
-        <Check className="h-3.5 w-3.5 text-[color:var(--accent-vermillion)]" aria-hidden />
-      ) : (
-        <Copy className="h-3.5 w-3.5 text-[color:var(--text-soft)]" aria-hidden />
-      )}
-    </button>
-  );
 }
 
 type UseAiButtonProps = {
@@ -977,59 +953,53 @@ export function CarouselGenerator({
               <div>
                 <div className="flex items-center justify-between gap-2">
                   <p className="text-xs font-semibold uppercase tracking-wide text-[color:var(--text-soft)]">
-                    Hashtags
+                    Hashtags &amp; tags
                   </p>
                   <button
                     type="button"
-                    onClick={() => void handleCopy("hashtags-all", carouselHashtagsText())}
-                    className="text-xs font-semibold text-[color:var(--accent-vermillion)] hover:underline"
+                    onClick={() => void handleCopy("share-all", carouselShareCopyText())}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-[color:var(--accent-vermillion)] hover:underline"
                   >
-                    {copiedKey === "hashtags-all" ? "Copied!" : "Copy all"}
-                  </button>
-                </div>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {CAROUSEL_HASHTAGS.map((tag) => {
-                    const key = `hashtag-${tag}`;
-                    return (
-                      <CopyChip
-                        key={tag}
-                        label={tag}
-                        copied={copiedKey === key}
-                        onCopy={() => void handleCopy(key, tag)}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between gap-2">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-[color:var(--text-soft)]">
-                    People to tag
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => void handleCopy("people-all", carouselTagAccountsText())}
-                    className="text-xs font-semibold text-[color:var(--accent-vermillion)] hover:underline"
-                  >
-                    {copiedKey === "people-all" ? "Copied!" : "Copy all"}
+                    {copiedKey === "share-all" ? (
+                      <>
+                        <Check className="h-3.5 w-3.5" aria-hidden />
+                        Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="h-3.5 w-3.5" aria-hidden />
+                        Copy all
+                      </>
+                    )}
                   </button>
                 </div>
                 <p className="mt-1 text-xs text-[color:var(--text-muted)]">
-                  Suggested accounts to mention in your post.
+                  Paste into your post caption in one go.
                 </p>
+                <button
+                  type="button"
+                  onClick={() => void handleCopy("share-all", carouselShareCopyText())}
+                  className="mt-3 w-full rounded-xl border border-[color:var(--border)] bg-[color:var(--bg-section)] px-3 py-3 text-left text-sm leading-relaxed text-[color:var(--text-main)] transition hover:border-[color:var(--accent-vermillion)]/40"
+                >
+                  {carouselShareCopyText()}
+                </button>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {CAROUSEL_TAG_ACCOUNTS.map((account) => {
-                    const key = `person-${account}`;
-                    return (
-                      <CopyChip
-                        key={account}
-                        label={account}
-                        copied={copiedKey === key}
-                        onCopy={() => void handleCopy(key, account)}
-                      />
-                    );
-                  })}
+                  {CAROUSEL_HASHTAGS.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-lg border border-[color:var(--border)] bg-[color:var(--bg-section)] px-3 py-1.5 text-xs font-medium text-[color:var(--text-muted)]"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                  {CAROUSEL_TAG_ACCOUNTS.map((account) => (
+                    <span
+                      key={account}
+                      className="rounded-lg border border-[color:var(--border)] bg-[color:var(--bg-section)] px-3 py-1.5 text-xs font-medium text-[color:var(--text-muted)]"
+                    >
+                      {account}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>

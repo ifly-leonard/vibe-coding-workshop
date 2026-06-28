@@ -13,3 +13,7 @@ export function carouselHashtagsText() {
 export function carouselTagAccountsText() {
   return CAROUSEL_TAG_ACCOUNTS.join(" ");
 }
+
+export function carouselShareCopyText() {
+  return `${carouselHashtagsText()} ${carouselTagAccountsText()}`;
+}

@@ -9,10 +9,10 @@ import {
   Users,
 } from "lucide-react";
 
-import { PartnerAcknowledgements } from "@/components/post-event/PartnerAcknowledgements";
 import { CarouselGenerator } from "@/components/post-event/CarouselGenerator";
 import { ThankYouFaq } from "@/components/post-event/ThankYouFaq";
-import { WorkshopTimeWizard } from "@/components/post-event/WorkshopTimeWizard";
+import { ThankYouFooter } from "@/components/post-event/ThankYouFooter";
+// import { WorkshopTimeWizard } from "@/components/post-event/WorkshopTimeWizard";
 import {
   FAVORITE_MOMENTS,
   INSTRUCTOR_MESSAGE,
@@ -20,7 +20,7 @@ import {
   type ThankYouLink,
 } from "@/lib/thank-you-for-coming/constants";
 
-const POLAROID_TILTS = [-5, 3.5, -2.5, 4, -3, 2];
+const POLAROID_TILTS = [-5, 3.5, -2.5, 4, -3, 2, -4, 2.5, -1.5, 3, -2, 4.5];
 
 const LINK_ICONS: Record<string, typeof ExternalLink> = {
   "Workshop photos": FolderOpen,
@@ -148,13 +148,13 @@ export function ThankYouForComingContent({ name, linkedInId }: ThankYouForComing
       <ImportantLinksStrip />
 
       <section className="overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--bg-card)] shadow-[0_16px_48px_oklch(0.18_0.008_60/0.08)]">
-        <WorkshopTimeWizard />
+        {/* <WorkshopTimeWizard /> */}
         <CarouselGenerator initialName={name} initialLinkedInId={linkedInId} />
       </section>
 
       <ThankYouFaq />
 
-      <PartnerAcknowledgements />
+      <ThankYouFooter />
     </div>
   );
 }
