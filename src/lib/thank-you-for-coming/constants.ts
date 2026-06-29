@@ -1,7 +1,7 @@
 export const THANK_YOU_GOOGLE_DRIVE_URL =
   "https://drive.google.com/drive/folders/1HHZUFpeIvx6qYUljZdVOYayRhpVfQXDr";
 
-export const THANK_YOU_FEEDBACK_URL = "https://forms.gle/placeholder-feedback";
+export const THANK_YOU_FEEDBACK_URL = "https://canyou.sayabout.us/f/NH7ZgtyW";
 
 export const THANK_YOU_DEFAULT_NAME = "Manick Basha";
 export const THANK_YOU_DEFAULT_LINKEDIN_ID = "bashabhi";
